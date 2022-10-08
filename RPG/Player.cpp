@@ -4,8 +4,8 @@
 #include "Player.h"
 
 
-Player::Player(const Vector2& pos, const Vector2& size, const Color& color) :
-        m_position{pos}, m_size{size}, m_color{color}
+Player::Player(const Vector2& pos, const Vector2& size, const Color& color, float speed) :
+        m_position{pos}, m_size{size}, m_color{color}, m_speed{speed}
 {
 
 }
@@ -18,23 +18,36 @@ void Player::drawPlayer()
 void Player::moveUp()
 {
     std::cout << "Moving UP\n";
-    m_position.y -= 1;
+    m_position.y -= m_speed;
 }
 
 void Player::moveDown()
 {
     std::cout << "Moving DOWN\n";
-    m_position.y += 1;
+    m_position.y += m_speed;
 }
 
 void Player::moveLeft()
 {
-    std::cout << "Moving DOWN\n";
-    m_position.x -= 1;
+    std::cout << "Moving Left\n";
+    m_position.x -= m_speed;
 }
 
 void Player::moveRight()
 {
-    std::cout << "Moving DOWN\n";
-    m_position.x += 1;
+    std::cout << "Moving Right\n";
+    m_position.x += m_speed;
 }
+
+void Player::dontMove()
+{
+    std::cout << "Not Moving";
+    m_position.x += 0;
+}
+
+Vector2 Player::getPosition()
+{
+    return m_position;
+}
+
+float Player::getSpeed() { return  m_speed; }

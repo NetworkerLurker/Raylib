@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug-coverage"
+			"value" : "/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug-coverage"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -515,7 +515,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/jay/CLionProjects/Raylib/RPG"
+			"value" : "/Users/jay/Documents/GitHub/Raylib/RPG"
 		},
 		{
 			"name" : "CMAKE_INSTALL_NAME_TOOL",
@@ -1383,7 +1383,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug-coverage"
+			"value" : "/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug-coverage"
 		},
 		{
 			"name" : "RPG_IS_TOP_LEVEL",
@@ -1407,7 +1407,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/jay/CLionProjects/Raylib/RPG"
+			"value" : "/Users/jay/Documents/GitHub/Raylib/RPG"
 		},
 		{
 			"name" : "__pkg_config_checked_PC_RAYLIB",

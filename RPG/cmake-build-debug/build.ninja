@@ -36,7 +36,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/
+cmake_ninja_workdir = /Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug/
 # =============================================================================
 # Object build statements for EXECUTABLE target RPG
 
@@ -46,21 +46,21 @@ cmake_ninja_workdir = /Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/
 
 build cmake_object_order_depends_target_RPG: phony || CMakeFiles/RPG.dir
 
-build CMakeFiles/RPG.dir/main.cpp.o: CXX_COMPILER__RPG_Debug /Users/jay/CLionProjects/Raylib/RPG/main.cpp || cmake_object_order_depends_target_RPG
+build CMakeFiles/RPG.dir/main.cpp.o: CXX_COMPILER__RPG_Debug /Users/jay/Documents/GitHub/Raylib/RPG/main.cpp || cmake_object_order_depends_target_RPG
   DEP_FILE = CMakeFiles/RPG.dir/main.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++20
   INCLUDES = -I/opt/homebrew/Cellar/raylib/4.2.0/include -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/RPG.dir
   OBJECT_FILE_DIR = CMakeFiles/RPG.dir
 
-build CMakeFiles/RPG.dir/InputHandler.cpp.o: CXX_COMPILER__RPG_Debug /Users/jay/CLionProjects/Raylib/RPG/InputHandler.cpp || cmake_object_order_depends_target_RPG
+build CMakeFiles/RPG.dir/InputHandler.cpp.o: CXX_COMPILER__RPG_Debug /Users/jay/Documents/GitHub/Raylib/RPG/InputHandler.cpp || cmake_object_order_depends_target_RPG
   DEP_FILE = CMakeFiles/RPG.dir/InputHandler.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++20
   INCLUDES = -I/opt/homebrew/Cellar/raylib/4.2.0/include -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/RPG.dir
   OBJECT_FILE_DIR = CMakeFiles/RPG.dir
 
-build CMakeFiles/RPG.dir/Player.cpp.o: CXX_COMPILER__RPG_Debug /Users/jay/CLionProjects/Raylib/RPG/Player.cpp || cmake_object_order_depends_target_RPG
+build CMakeFiles/RPG.dir/Player.cpp.o: CXX_COMPILER__RPG_Debug /Users/jay/Documents/GitHub/Raylib/RPG/Player.cpp || cmake_object_order_depends_target_RPG
   DEP_FILE = CMakeFiles/RPG.dir/Player.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++20
   INCLUDES = -I/opt/homebrew/Cellar/raylib/4.2.0/include -isystem /opt/homebrew/include
@@ -89,7 +89,7 @@ build RPG: CXX_EXECUTABLE_LINKER__RPG_Debug CMakeFiles/RPG.dir/main.cpp.o CMakeF
 # Utility command for package
 
 build CMakeFiles/package.util: CUSTOM_COMMAND all
-  COMMAND = cd /Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cpack --config ./CPackConfig.cmake
+  COMMAND = cd /Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cpack --config ./CPackConfig.cmake
   DESC = Run CPack packaging tool...
   pool = console
   restat = 1
@@ -101,7 +101,7 @@ build package: phony CMakeFiles/package.util
 # Utility command for package_source
 
 build CMakeFiles/package_source.util: CUSTOM_COMMAND
-  COMMAND = cd /Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cpack --config ./CPackSourceConfig.cmake /Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/CPackSourceConfig.cmake
+  COMMAND = cd /Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cpack --config ./CPackSourceConfig.cmake /Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug/CPackSourceConfig.cmake
   DESC = Run CPack packaging tool for source...
   pool = console
   restat = 1
@@ -113,7 +113,7 @@ build package_source: phony CMakeFiles/package_source.util
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  COMMAND = cd /Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -124,7 +124,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/jay/CLionProjects/Raylib/RPG -B/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug
+  COMMAND = cd /Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S/Users/jay/Documents/GitHub/Raylib/RPG -B/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -140,7 +140,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 
 #############################################
-# Folder: /Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug
+# Folder: /Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug
 
 build all: phony RPG
 

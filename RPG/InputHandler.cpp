@@ -24,8 +24,8 @@ void InputHandler::handleInput(Player& player)
 {
     if (IsKeyPressed(KEY_RIGHT)) m_keyRight->execute(player);
     else if (IsKeyPressed(KEY_LEFT)) m_keyLeft->execute(player);
-    else if (IsKeyPressed(KEY_UP)) m_keyUp->execute(player);
-    else if (IsKeyPressed(KEY_DOWN)) m_keyDown->execute(player);
+//    else if (IsKeyPressed(KEY_UP)) m_keyUp->execute(player);
+//    else if (IsKeyPressed(KEY_DOWN)) m_keyDown->execute(player);
 }
 
 void InputHandler::setUpCommand(Command* c)

@@ -8,7 +8,6 @@
 #include <raylib.h>
 #include <string_view>
 
-
 class Window
 {
 private:
@@ -16,7 +15,6 @@ private:
     int m_height{};
     const char* m_title{};
     int m_fps{};
-
 
 public:
     explicit Window(int w = 800, int h = 450, const char* title = "Default", int fps = 60) :
@@ -32,6 +30,5 @@ public:
     [[nodiscard]] int getHeight() const { return m_height; }
 
 };
-
 
 #endif //RPG_WINDOW_H
