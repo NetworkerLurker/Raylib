@@ -33,4 +33,5 @@ public:
 
 };
 
+
 #endif //RPG_WINDOW_H

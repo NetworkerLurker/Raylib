@@ -4,8 +4,8 @@
 #include "Player.h"
 
 
-Player::Player(const Vector2& pos, const Vector2& size, const Color& color, const float speed) :
-        m_position{pos}, m_size{size}, m_color{color}, m_speed{speed}
+Player::Player(const Vector2& pos, const Vector2& size, const Color& color) :
+        m_position{pos}, m_size{size}, m_color{color}
 {
 
 }
@@ -18,23 +18,23 @@ void Player::drawPlayer()
 void Player::moveUp()
 {
     std::cout << "Moving UP\n";
-    m_position.y -= m_speed;
+    m_position.y -= 1;
 }
 
 void Player::moveDown()
 {
     std::cout << "Moving DOWN\n";
-    m_position.y += m_speed;
+    m_position.y += 1;
 }
 
 void Player::moveLeft()
 {
     std::cout << "Moving LEFT\n";
-    m_position.x -= m_speed;
+    m_position.x -= 1;
 }
 
 void Player::moveRight()
 {
     std::cout << "Moving RIGHT\n";
-    m_position.x += m_speed;
+    m_position.x += 1;
 }

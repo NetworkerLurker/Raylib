@@ -14,10 +14,9 @@ private:
     Vector2 m_position{};
     Vector2 m_size{};
     Color m_color{};
-    float m_speed{};
 
 public:
-    Player(const Vector2& pos, const Vector2& size, const Color& color, float speed);
+    Player(const Vector2& pos, const Vector2& size, const Color& color);
 
     void drawPlayer();
 
@@ -25,8 +24,6 @@ public:
     void moveDown();
     void moveLeft();
     void moveRight();
-
-    void printPosition() { std::cout << "X: "<< m_position.x << " Y: " << m_position.y << '\n';
 
 };
 
