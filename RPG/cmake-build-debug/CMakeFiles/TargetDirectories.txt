@@ -1,5 +1,5 @@
-/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug/CMakeFiles/RPG.dir
-/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug/CMakeFiles/package.dir
-/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug/CMakeFiles/package_source.dir
-/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/CMakeFiles/RPG.dir
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/CMakeFiles/package.dir
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/CMakeFiles/package_source.dir
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -29,12 +29,12 @@ void Player::moveDown()
 
 void Player::moveLeft()
 {
-    std::cout << "Moving LEFT\n";
+    std::cout << "Moving DOWN\n";
     m_position.x -= 1;
 }
 
 void Player::moveRight()
 {
-    std::cout << "Moving RIGHT\n";
+    std::cout << "Moving DOWN\n";
     m_position.x += 1;
 }

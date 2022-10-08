@@ -1,5 +1,6 @@
 #include <raylib.h>
 
+#include "Command.h"
 #include "InputHandler.h"
 #include "Player.h"
 #include "Window.h"
