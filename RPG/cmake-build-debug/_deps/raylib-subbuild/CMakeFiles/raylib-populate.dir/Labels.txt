@@ -1,0 +1,14 @@
+# Target labels
+ raylib-populate
+# Source files and their labels
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/raylib-populate
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/raylib-populate.rule
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/raylib-populate-complete.rule
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-build.rule
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-configure.rule
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-download.rule
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-install.rule
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-mkdir.rule
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-patch.rule
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-test.rule
+/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-update.rule
