@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug",
-		"source" : "/Users/jay/CLionProjects/Raylib/RPG"
+		"build" : "/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug",
+		"source" : "/Users/jay/Documents/GitHub/Raylib/RPG"
 	},
 	"version" : 
 	{
