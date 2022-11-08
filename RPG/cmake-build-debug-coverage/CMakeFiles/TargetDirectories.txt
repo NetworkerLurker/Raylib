@@ -1,3 +1,0 @@
-/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug-coverage/CMakeFiles/RPG.dir
-/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug-coverage/CMakeFiles/edit_cache.dir
-/Users/jay/Documents/GitHub/Raylib/RPG/cmake-build-debug-coverage/CMakeFiles/rebuild_cache.dir

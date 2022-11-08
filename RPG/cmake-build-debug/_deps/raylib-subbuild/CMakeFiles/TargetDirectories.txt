@@ -1,3 +1,0 @@
-/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/raylib-populate.dir
-/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/edit_cache.dir
-/Users/jay/CLionProjects/Raylib/RPG/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/rebuild_cache.dir
