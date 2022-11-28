@@ -24,7 +24,7 @@ public:
 
     ~Window() { CloseWindow(); }
 
-    static void setFps() {
+    static void setDefaultFps() {
         SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
     }
 
@@ -34,7 +34,7 @@ public:
 
     [[nodiscard]] int getWidth() const { return m_width; }
     [[nodiscard]] int getHeight() const { return m_height; }
-    [[nodiscard]] const char *getTitle() const { return m_title; }
+    [[nodiscard]] const char* getTitle() const { return m_title; }
 };
 
 #endif //DODGER_WINDOW_H

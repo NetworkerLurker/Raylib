@@ -24,20 +24,24 @@ public:
         DrawRectangleRec(getRec(), getColor());
     }
 
-    void move() {
-        m_rec.y += m_speed * GetFrameTime();
+    void moveDown(int maxHeight) {
+        m_rec.y += maxHeight;
     }
 
-    void resetPosition(Window& win) {
+    void grow(int minHeight, int minWidth) {
+        m_rec.height *= 1.5;
+        m_rec.width *= 1.318;
+    }
+
+    void resetPosition(int totalCol) {
         m_rec.y = 0;
-        int position{GetRandomValue(1,4)};
-        switch(position) {
-            case 1: m_rec.x = 0; break;
-            case 2: m_rec.x = m_rec.x =  win.getWidth() / 4; break;
-            case 3: m_rec.x = win.getWidth() / 2; break;
-            case 4: m_rec.x = win.getWidth() - m_rec.width; break;
-            default: m_rec.x = 0;
-        }
+        int columnPosition{GetRandomValue(1,totalCol)};
+        //m_rec.x = (m_rec.width / 5) * columnPosition;
+    }
+
+    void resetSize(int minWidth, int minHeight) {
+        m_rec.width = minWidth;
+        m_rec.height = minHeight;
     }
 
     [[nodiscard]] Rectangle getRec() const { return m_rec; }
