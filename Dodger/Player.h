@@ -20,15 +20,15 @@ public:
             m_rect{rec}, m_color{color} { }
 
     void draw() const {
-        DrawRectangleRec(getRec(), getColor());
+        DrawRectangleLinesEx(getRec(), 4, getColor());
     }
 
     void moveLeft() {
-        m_rect.x -= m_rect.width;
+        m_rect.x -= m_rect.width * 1.5f;
     }
 
     void moveRight() {
-        m_rect.x += m_rect.width;
+        m_rect.x += m_rect.width * 1.5;
     }
 
     void changeColor(Color c) { m_color = c; }

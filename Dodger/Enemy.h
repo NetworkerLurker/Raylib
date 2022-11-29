@@ -21,7 +21,7 @@ public:
             m_rec{rec}, m_speed{speed} , m_color{color} { }
 
     void draw() const {
-        DrawRectangleRec(getRec(), getColor());
+        DrawRectangleLinesEx(getRec(), 2, getColor());
     }
 
     void moveDown(int maxHeight) {
@@ -30,13 +30,19 @@ public:
 
     void grow(int minHeight, int minWidth) {
         m_rec.height *= 1.5;
-        m_rec.width *= 1.318;
+        m_rec.width *= 1.5;
     }
 
-    void resetPosition(int totalCol) {
-        m_rec.y = 0;
-        int columnPosition{GetRandomValue(1,totalCol)};
-        //m_rec.x = (m_rec.width / 5) * columnPosition;
+    void resetPosition(Window& win) {
+        m_rec.y = win.getHeight() / 2;
+
+        int randNum{GetRandomValue(1,3)};
+        switch(randNum) {
+            case 1 : m_rec.x = win.getWidth() / 2; break;
+            case 2 : m_rec.x = win.getWidth() / 2.3;break;
+            case 3 : m_rec.x = win.getWidth() / 1.9;break;
+            default: std::cout << "error finding reset location for enemy";
+        }
     }
 
     void resetSize(int minWidth, int minHeight) {
