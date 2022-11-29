@@ -5,10 +5,10 @@
 
 #include "Window.h"
 #include "Player.h"
-#include "Enemy.h"
 
 void checkMove(Player& player, int columns);
 void drawRoad(int winHeight, int winWidth, int halfHeight, int halfWidth , Color&& color);
+void drawRoadMarkers(int winHeight, int winWidth, int halfHeight, int halfWidth , Color&& color);
 
 enum class Racers {
     leftRacer,
@@ -42,7 +42,6 @@ int main() {
     Player player{playerRect, RED};
 
     //racers
-    
     float row2Width{rectWidth * .75f};
     float row3Width{rectWidth *.50f};
     float row4Width{rectWidth *.25f};
@@ -88,7 +87,7 @@ int main() {
     int mt{0};
     int rt{0};
 
-    int timeToSpawn{80};
+    int timeToSpawn{90};
     int spawnTime{timeToSpawn};
 
 
@@ -101,8 +100,7 @@ int main() {
         BeginDrawing();
 
         drawRoad(winHeight, winWidth, halfHeight, halfWidth , RED);
-
-
+        drawRoadMarkers(winHeight, winWidth, halfHeight, halfWidth , RED);
 
         if(spawnTime > timeToSpawn) {
             switch(GetRandomValue(1, 3)) {
@@ -112,7 +110,6 @@ int main() {
             }
             spawnTime = 0;
         }
-
 
         if(leftSpawn) {
             DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::leftRacer)][leftPosition], leftPosition + 1, GREEN);
@@ -131,7 +128,6 @@ int main() {
                 }
             }
         }
-
 
         if(midSpawn) {
             DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::midRacer)][midPosition], midPosition + 1, GREEN);
@@ -198,8 +194,10 @@ void drawRoad(int winHeight, int winWidth, int halfHeight, int halfWidth , Color
     //road
     DrawLine(halfWidth, halfHeight, 0, winHeight, color);        //left road edge
     DrawLine(halfWidth, halfHeight, winWidth, winHeight, color); //right road edge
+}
 
-    //road lines
+void drawRoadMarkers(int winHeight, int winWidth, int halfHeight, int halfWidth , Color&& color) {
     DrawLine(halfWidth, halfHeight, winWidth * .30f, winHeight, color); // left lines
     DrawLine(halfWidth, halfHeight, winWidth * .70f, winHeight, color); // right lines
 }
+

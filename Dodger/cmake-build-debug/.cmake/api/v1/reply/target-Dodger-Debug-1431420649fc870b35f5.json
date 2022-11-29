@@ -124,8 +124,7 @@
 			"sourceIndexes" : 
 			[
 				1,
-				2,
-				3
+				2
 			]
 		}
 	],
@@ -145,11 +144,6 @@
 		{
 			"backtrace" : 1,
 			"path" : "Window.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Enemy.h",
 			"sourceGroupIndex" : 1
 		}
 	],
