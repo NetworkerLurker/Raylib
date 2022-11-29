@@ -124,7 +124,8 @@
 			"sourceIndexes" : 
 			[
 				1,
-				2
+				2,
+				3
 			]
 		}
 	],
@@ -144,6 +145,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "Window.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Racer.h",
 			"sourceGroupIndex" : 1
 		}
 	],

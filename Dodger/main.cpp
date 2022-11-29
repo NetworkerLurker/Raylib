@@ -5,17 +5,19 @@
 
 #include "Window.h"
 #include "Player.h"
+#include "Racer.h"
+
+enum class GameState {
+    logo,
+    title,
+    game,
+    end,
+    maxstates,
+};
 
 void checkMove(Player& player, int columns);
 void drawRoad(int winHeight, int winWidth, int halfHeight, int halfWidth , Color&& color);
 void drawRoadMarkers(int winHeight, int winWidth, int halfHeight, int halfWidth , Color&& color);
-
-enum class Racers {
-    leftRacer,
-    midRacer,
-    rightRacer,
-    maxRacers,
-};
 
 int main() {
 
@@ -23,7 +25,7 @@ int main() {
     constexpr int winWidth{960};
     constexpr int winHeight{static_cast<int>(winWidth * .75f)}; //we can change the winWidth and keep the same aspect ratio
     Window window{winWidth, winHeight, "Dodger"};
-    Window::setDefaultFps();
+    Window::setDefaultFps(); //sets fps to monitors max refresh rate
 
     constexpr int halfWidth{static_cast<int>(winWidth * 0.5f)};
     constexpr int halfHeight{static_cast<int>(winHeight * 0.5f)};
@@ -32,7 +34,7 @@ int main() {
     constexpr int rows = 5;
 
     //SHAPE SETTINGS
-    constexpr int rectWidth{winWidth / columns}; //window will always be 4 squares wide
+    constexpr int rectWidth{winWidth / columns};
     constexpr int rectHeight{halfHeight / rows};
 
     //player
@@ -87,91 +89,167 @@ int main() {
     int mt{0};
     int rt{0};
 
-    int timeToSpawn{90};
+    int leftSpeed{15};
+    int midSpeed{15};
+    int rightSpeed{15};
+    
+    int timeToSpawn{30};
     int spawnTime{timeToSpawn};
-
 
     bool leftSpawn = false;
     bool midSpawn = false;
     bool rightSpawn = false;
 
+    int score{0};
+    int highscore{0};
+
+    int frameCounter{0};
+
+    auto currentState{GameState::logo};
+
     while(!WindowShouldClose()) {
 
         BeginDrawing();
-
-        drawRoad(winHeight, winWidth, halfHeight, halfWidth , RED);
-        drawRoadMarkers(winHeight, winWidth, halfHeight, halfWidth , RED);
-
-        if(spawnTime > timeToSpawn) {
-            switch(GetRandomValue(1, 3)) {
-                case 1: leftSpawn = true; break;
-                case 2: midSpawn = true; break;
-                case 3: rightSpawn = true; break;
-            }
-            spawnTime = 0;
-        }
-
-        if(leftSpawn) {
-            DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::leftRacer)][leftPosition], leftPosition + 1, GREEN);
-            ++lt;
-            if(CheckCollisionRecs(allRacerRecs[static_cast<int>(Racers::leftRacer)][leftPosition], player.getRec())) {
-                player.changeColor(PURPLE);
-            }
-            if(lt > 60) {
-                ++leftPosition;
-                lt = 0;
-                if (leftPosition > leftRacerRecs.size() - 1) {
-
-                    leftPosition = 0;
-                    lt = 0;
-                    leftSpawn = false;
-                }
-            }
-        }
-
-        if(midSpawn) {
-            DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::midRacer)][midPosition], midPosition + 1, GREEN);
-            ++mt;
-            if(CheckCollisionRecs(allRacerRecs[static_cast<int>(Racers::midRacer)][midPosition], player.getRec())) {
-                player.changeColor(PURPLE);
-            }
-            if(mt > 60) {
-                ++midPosition;
-                mt = 0;
-                if (midPosition > middleRacerRecs.size() - 1) {
-                    midPosition = 0;
-                    mt = 0;
-                    midSpawn = false;
-                }
-            }
-        }
-
-        if(rightSpawn) {
-            DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::rightRacer)][rightPosition], rightPosition + 1, GREEN);
-            ++rt;
-            if(CheckCollisionRecs(allRacerRecs[static_cast<int>(Racers::rightRacer)][rightPosition], player.getRec())) {
-                player.changeColor(PURPLE);
-            }
-            if(rt > 60) {
-                ++rightPosition;
-                rt = 0;
-                if (rightPosition > rightRacerRecs.size() - 1) {
-                    rightPosition = 0;
-                    rt = 0;
-                    rightSpawn = false;
-                }
-            }
-        }
-
-
         ClearBackground(BLACK);
-        player.draw();
 
-        checkMove(player, columns);
+        switch(currentState) {
+            case GameState::logo : {
+                if(frameCounter > GetFPS() * 2) {
+                    currentState = GameState::title;
+                }
+                DrawText("Sunset", winHeight / 2, halfHeight, 124, RED);
+                DrawLine(3 * frameCounter, 0, 3 * frameCounter, winHeight, RED);
+                DrawLine(0, 2 * frameCounter, winWidth, 2 * frameCounter, RED);
+                frameCounter++;
+            } break;
+            case GameState::title : {
+                if(IsKeyPressed(KEY_SPACE)) {
+                    currentState = GameState::game;
+                }
+                DrawText("Dodger", winWidth * .25f, winHeight * .25, 124, RED);
+                DrawText("Press Space To Start", winWidth * .10f, winHeight / 2, 64, RED);
+            } break;
+            case GameState::game : {
+                if(spawnTime > timeToSpawn) {
+                    switch(GetRandomValue(1, 3)) {
+                        case 1: leftSpawn = true; break;
+                        case 2: midSpawn = true; break;
+                        case 3: rightSpawn = true; break;
+                    }
+                    spawnTime = 0;
+                }
+
+                checkMove(player, columns);
+                player.draw();
+
+                DrawText("Dodges:",winWidth * .75f,winHeight * .05f,36,RED);
+                DrawText(TextFormat("%i",score),winWidth * .90f,winHeight * .05f,36,RED);
+
+                drawRoad(winHeight, winWidth, halfHeight, halfWidth , RED);
+                drawRoadMarkers(winHeight, winWidth, halfHeight, halfWidth , RED);
+
+                if(leftSpawn) {
+                    DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::leftRacer)][leftPosition], leftPosition + 1, GREEN);
+                    ++lt;
+
+                    if(CheckCollisionRecs(allRacerRecs[static_cast<int>(Racers::leftRacer)][leftPosition], player.getRec())) {
+                        currentState = GameState::end;
+                    }
+
+                    if(lt > leftSpeed) {
+                        ++leftPosition;
+                        lt = 0;
+                        if (leftPosition > leftRacerRecs.size() - 1) {
+                            score++;
+                            leftPosition = 0;
+                            lt = 0;
+                            leftSpawn = false;
+                        }
+                    }
+                }
+
+                if(midSpawn) {
+                    DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::midRacer)][midPosition], midPosition + 1, GREEN);
+                    ++mt;
+
+                    if(CheckCollisionRecs(allRacerRecs[static_cast<int>(Racers::midRacer)][midPosition], player.getRec())) {
+                        currentState = GameState::end;
+                    }
+
+                    if(mt > midSpeed) {
+                        ++midPosition;
+                        mt = 0;
+
+                        if (midPosition > middleRacerRecs.size() - 1) {
+                            score++;
+                            midPosition = 0;
+                            mt = 0;
+                            midSpawn = false;
+                        }
+                    }
+                }
+
+                if(rightSpawn) {
+                    DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::rightRacer)][rightPosition], rightPosition + 1, GREEN);
+                    ++rt;
+
+                    if(CheckCollisionRecs(allRacerRecs[static_cast<int>(Racers::rightRacer)][rightPosition], player.getRec())) {
+                        currentState = GameState::end;
+                    }
+
+                    if(rt > rightSpeed) {
+                        ++rightPosition;
+                        rt = 0;
+
+                        if (rightPosition > rightRacerRecs.size() - 1) {
+                            score++;
+                            rightPosition = 0;
+                            rt = 0;
+                            rightSpawn = false;
+                        }
+                    }
+
+                }
+
+                ++spawnTime;
+            } break;
+            case GameState::end : {
+                leftPosition = 0;
+                midPosition = 0;
+                rightPosition = 0;
+
+                lt = 0;
+                mt = 0;
+                rt = 0;
+
+                leftSpawn = false;
+                midPosition = false;
+                rightPosition = false;
+
+                if(score > highscore) {
+                    highscore = score;
+                }
+
+                score = 0;
+
+                drawRoad(winHeight, winWidth, halfHeight, halfWidth , RED);
+                drawRoadMarkers(winHeight, winWidth, halfHeight, halfWidth , RED);
+
+                DrawText("Press R To Retry", winWidth * .35f, winHeight * .30f, 36, RED);
+                DrawText("Press ESC To Quit", winWidth * .35f, winHeight * .40f, 36, RED);
+
+                DrawText("Highscore:", winWidth * .40f, winHeight * .20f, 36, RED);
+                DrawText(TextFormat("%i",highscore),winWidth * .61f,winHeight * .20f,36,RED);
+
+
+                if(IsKeyPressed(KEY_R)) {
+                    currentState = GameState::game;
+                }
+
+            } break;
+        }
 
         EndDrawing();
-
-        ++spawnTime;
 
     }
 
