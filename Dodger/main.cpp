@@ -2,6 +2,7 @@
 
 #include <raylib.h>
 #include <array>
+#include <fstream>
 
 #include "Window.h"
 #include "Player.h"
@@ -20,6 +21,8 @@ void drawRoad(int winHeight, int winWidth, int halfHeight, int halfWidth , Color
 void drawRoadMarkers(int winHeight, int winWidth, int halfHeight, int halfWidth , Color&& color);
 
 int main() {
+
+    std::ofstream data{};
 
     //Window settings
     constexpr int winWidth{960};
@@ -90,11 +93,14 @@ int main() {
     int mt{0};
     int rt{0};
 
-    int leftSpeed{15};
-    int midSpeed{15};
-    int rightSpeed{15};
+    int baseRacerSpeed{60};
+    int minSpeed{10};
+    int leftSpeed{baseRacerSpeed};
+    int midSpeed{baseRacerSpeed};
+    int rightSpeed{baseRacerSpeed};
+    int speed{0};
 
-    int timeToSpawn{30};
+    int timeToSpawn{baseRacerSpeed * 2};
     int spawnTime{timeToSpawn};
 
     bool leftSpawn = false;
@@ -103,6 +109,7 @@ int main() {
 
     int score{0};
     int highscore{0};
+    int distance{0};
 
     int frameCounter{0};
 
@@ -115,36 +122,80 @@ int main() {
 
         switch(currentState) {
             case GameState::logo : {
+
                 if(frameCounter > GetFPS() * 2) {
                     currentState = GameState::title;
+                    frameCounter = 0;
                 }
+
+                std::ifstream iData{"save.txt"};
+                int tempVar;
+                iData >> tempVar;
+                highscore = tempVar;
+
                 DrawText("Sunset", winHeight / 2, halfHeight, 124, RED);
                 DrawLine(3 * frameCounter, 0, 3 * frameCounter, winHeight, RED);
                 DrawLine(0, 2 * frameCounter, winWidth, 2 * frameCounter, RED);
+
                 frameCounter++;
             } break;
+
             case GameState::title : {
+
                 if(IsKeyPressed(KEY_SPACE)) {
                     currentState = GameState::game;
                 }
+
                 DrawText("Dodger", winWidth * .25f, winHeight * .25, 124, RED);
                 DrawText("Press Space To Start", winWidth * .10f, winHeight / 2, 64, RED);
+
             } break;
+
             case GameState::game : {
+
+                distance = (180 - (speed * 2) ) * frameCounter / GetFPS();
+
+                if(IsKeyReleased(KEY_W)) {
+                    if(leftSpeed > minSpeed) {
+                        --leftSpeed;
+                        timeToSpawn = leftSpeed * 2;
+                    }
+                    if(midSpeed > minSpeed) {
+                        --midSpeed;
+                        timeToSpawn = midSpeed * 2;
+                    }
+                    if(rightSpeed > minSpeed) {
+                        --rightSpeed;
+                        timeToSpawn = rightSpeed * 2;
+                    }
+                }
+
                 if(spawnTime > timeToSpawn) {
-                    switch(GetRandomValue(1, 3)) {
+                    switch(GetRandomValue(1, 4)) {
                         case 1: leftSpawn = true; break;
                         case 2: midSpawn = true; break;
                         case 3: rightSpawn = true; break;
                     }
+
                     spawnTime = 0;
+                }
+
+                if(leftSpeed < rightSpeed && midSpeed) {
+                    speed = leftSpeed;
+                } else if ( midSpeed < rightSpeed && leftSpeed ) {
+                    speed = midSpeed;
+                } else
+                {
+                    speed = rightSpeed;
                 }
 
                 checkMove(player, columns);
                 player.draw();
 
-                DrawText("Dodges:",winWidth * .75f,winHeight * .05f,36,RED);
-                DrawText(TextFormat("%i",score),winWidth * .90f,winHeight * .05f,36,RED);
+                DrawText(TextFormat("Dodges: %i",score),winWidth * .70f,winHeight * .05f,36,RED);
+                DrawText(TextFormat("Speed: %imph",180 - (speed * 2)),winWidth * .70f,winHeight * .10f,36,RED);
+                DrawText(TextFormat("Distance: %i'",distance),winWidth * .70f,winHeight * .15f,36,RED);
+
 
                 drawRoad(winHeight, winWidth, halfHeight, halfWidth , RED);
                 drawRoadMarkers(winHeight, winWidth, halfHeight, halfWidth , RED);
@@ -164,6 +215,9 @@ int main() {
                             score++;
                             leftPosition = 0;
                             lt = 0;
+                            if(leftSpeed > minSpeed) {
+                                --leftSpeed;
+                            }
                             leftSpawn = false;
                         }
                     }
@@ -185,6 +239,9 @@ int main() {
                             score++;
                             midPosition = 0;
                             mt = 0;
+                            if(midSpeed > minSpeed) {
+                                --midSpeed;
+                            }
                             midSpawn = false;
                         }
                     }
@@ -206,6 +263,9 @@ int main() {
                             score++;
                             rightPosition = 0;
                             rt = 0;
+                            if(rightSpeed > minSpeed) {
+                                --rightSpeed;
+                            }
                             rightSpawn = false;
                         }
                     }
@@ -213,8 +273,11 @@ int main() {
                 }
 
                 ++spawnTime;
+                ++frameCounter;
             } break;
+
             case GameState::end : {
+
                 leftPosition = 0;
                 midPosition = 0;
                 rightPosition = 0;
@@ -227,11 +290,21 @@ int main() {
                 midPosition = false;
                 rightPosition = false;
 
+                leftSpeed = baseRacerSpeed;
+                midSpeed = baseRacerSpeed;
+                rightSpeed = baseRacerSpeed;
+
                 if(score > highscore) {
                     highscore = score;
+                    data.open("save.txt");
+                    data << highscore;
+                    data.close();
                 }
 
                 score = 0;
+                timeToSpawn = baseRacerSpeed * 2;
+                speed = baseRacerSpeed;
+                frameCounter = 0;
 
                 drawRoad(winHeight, winWidth, halfHeight, halfWidth , RED);
                 drawRoadMarkers(winHeight, winWidth, halfHeight, halfWidth , RED);
@@ -251,7 +324,6 @@ int main() {
         }
 
         EndDrawing();
-
     }
 
     return 0;
