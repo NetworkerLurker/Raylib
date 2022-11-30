@@ -15,26 +15,19 @@ private:
     const char* m_title{};
 
 public:
-    Window() = default;
+    Window();
 
-    Window(int width, int height, const char* title) :
-        m_width{width}, m_height{height}, m_title{title} {
-        InitWindow(getWidth(), getHeight(), getTitle());
-    }
+    Window(int width, int height, const char* title);
 
-    ~Window() { CloseWindow(); }
+    ~Window();
 
-    static void setDefaultFps() {
-        SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
-    }
+    static void setDefaultFps();
 
-    void initialize() const {
-        InitWindow(getWidth(), getHeight(), getTitle());
-    };
+    void initialize() const;
 
-    [[nodiscard]] int getWidth() const { return m_width; }
-    [[nodiscard]] int getHeight() const { return m_height; }
-    [[nodiscard]] const char* getTitle() const { return m_title; }
+    [[nodiscard]] int getWidth() const;
+    [[nodiscard]] int getHeight() const;
+    [[nodiscard]] const char* getTitle() const;
 };
 
 #endif //DODGER_WINDOW_H

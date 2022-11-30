@@ -25,6 +25,7 @@ int main() {
     constexpr int winWidth{960};
     constexpr int winHeight{static_cast<int>(winWidth * .75f)}; //we can change the winWidth and keep the same aspect ratio
     Window window{winWidth, winHeight, "Dodger"};
+    window.initialize();
     Window::setDefaultFps(); //sets fps to monitors max refresh rate
 
     constexpr int halfWidth{static_cast<int>(winWidth * 0.5f)};
@@ -92,7 +93,7 @@ int main() {
     int leftSpeed{15};
     int midSpeed{15};
     int rightSpeed{15};
-    
+
     int timeToSpawn{30};
     int spawnTime{timeToSpawn};
 
