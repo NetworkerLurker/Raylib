@@ -31,6 +31,11 @@ int main() {
     window.initialize();
     Window::setDefaultFps(); //sets fps to monitors max refresh rate
 
+    //Audio settings
+    InitAudioDevice();
+    Music song1{LoadMusicStream("Music/Line%20Noise%20-%20Magenta%20Moon%20%28Part%20II%29.mp3")};
+    PlayMusicStream(song1);
+
     constexpr int halfWidth{static_cast<int>(winWidth * 0.5f)};
     constexpr int halfHeight{static_cast<int>(winHeight * 0.5f)};
 
@@ -45,7 +50,7 @@ int main() {
     constexpr int startRow{1};
     constexpr int startColumn{2};
     Rectangle playerRect{rectWidth * startColumn, winHeight - (rectHeight * startRow), rectWidth, rectHeight};
-    Player player{playerRect, RED};
+    Player player{playerRect, DARKBLUE};
 
     //racers
     float row2Width{rectWidth * .75f};
@@ -118,7 +123,7 @@ int main() {
     while(!WindowShouldClose()) {
 
         BeginDrawing();
-        ClearBackground(BLACK);
+        ClearBackground(RAYWHITE);
 
         switch(currentState) {
             case GameState::logo : {
@@ -133,9 +138,9 @@ int main() {
                 iData >> tempVar;
                 highscore = tempVar;
 
-                DrawText("Sunset", winHeight / 2, halfHeight, 124, RED);
-                DrawLine(3 * frameCounter, 0, 3 * frameCounter, winHeight, RED);
-                DrawLine(0, 2 * frameCounter, winWidth, 2 * frameCounter, RED);
+                DrawText("Loading", winHeight / 2, halfHeight, 124, DARKBLUE);
+                DrawLine(3 * frameCounter, 0, 3 * frameCounter, winHeight, DARKBLUE);
+                DrawLine(0, 2 * frameCounter, winWidth, 2 * frameCounter, DARKBLUE);
 
                 frameCounter++;
             } break;
@@ -145,14 +150,14 @@ int main() {
                 if(IsKeyPressed(KEY_SPACE)) {
                     currentState = GameState::game;
                 }
-
-                DrawText("Dodger", winWidth * .25f, winHeight * .25, 124, RED);
-                DrawText("Press Space To Start", winWidth * .10f, winHeight / 2, 64, RED);
+                DrawText("Dodger", winWidth * .25f, winHeight * .25, 124, DARKBLUE);
+                DrawText("Press Space To Start", winWidth * .10f, winHeight / 2, 64, DARKBLUE);
 
             } break;
 
             case GameState::game : {
 
+                UpdateMusicStream(song1);
                 distance = (180 - (speed * 2) ) * frameCounter / GetFPS();
 
                 if(IsKeyReleased(KEY_W)) {
@@ -192,13 +197,13 @@ int main() {
                 checkMove(player, columns);
                 player.draw();
 
-                DrawText(TextFormat("Dodges: %i",score),winWidth * .70f,winHeight * .05f,36,RED);
-                DrawText(TextFormat("Speed: %imph",180 - (speed * 2)),winWidth * .70f,winHeight * .10f,36,RED);
-                DrawText(TextFormat("Distance: %i'",distance),winWidth * .70f,winHeight * .15f,36,RED);
+                DrawText(TextFormat("Dodges: %i",score),winWidth * .70f,winHeight * .05f,36,DARKBLUE);
+                DrawText(TextFormat("Speed: %imph",180 - (speed * 2)),winWidth * .70f,winHeight * .10f,36,DARKBLUE);
+                DrawText(TextFormat("Distance: %i'",distance),winWidth * .70f,winHeight * .15f,36,DARKBLUE);
 
 
-                drawRoad(winHeight, winWidth, halfHeight, halfWidth , RED);
-                drawRoadMarkers(winHeight, winWidth, halfHeight, halfWidth , RED);
+                drawRoad(winHeight, winWidth, halfHeight, halfWidth , DARKBLUE);
+                drawRoadMarkers(winHeight, winWidth, halfHeight, halfWidth , DARKBLUE);
 
                 if(leftSpawn) {
                     DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::leftRacer)][leftPosition], leftPosition + 1, GREEN);
@@ -306,14 +311,14 @@ int main() {
                 speed = baseRacerSpeed;
                 frameCounter = 0;
 
-                drawRoad(winHeight, winWidth, halfHeight, halfWidth , RED);
-                drawRoadMarkers(winHeight, winWidth, halfHeight, halfWidth , RED);
+                drawRoad(winHeight, winWidth, halfHeight, halfWidth , DARKBLUE);
+                drawRoadMarkers(winHeight, winWidth, halfHeight, halfWidth , DARKBLUE);
 
-                DrawText("Press R To Retry", winWidth * .35f, winHeight * .30f, 36, RED);
-                DrawText("Press ESC To Quit", winWidth * .35f, winHeight * .40f, 36, RED);
+                DrawText("Press R To Retry", winWidth * .35f, winHeight * .30f, 36, DARKBLUE);
+                DrawText("Press ESC To Quit", winWidth * .35f, winHeight * .40f, 36, DARKBLUE);
 
-                DrawText("Highscore:", winWidth * .40f, winHeight * .20f, 36, RED);
-                DrawText(TextFormat("%i",highscore),winWidth * .61f,winHeight * .20f,36,RED);
+                DrawText("Highscore:", winWidth * .40f, winHeight * .20f, 36, DARKBLUE);
+                DrawText(TextFormat("%i",highscore),winWidth * .61f,winHeight * .20f,36,DARKBLUE);
 
 
                 if(IsKeyPressed(KEY_R)) {
@@ -325,6 +330,9 @@ int main() {
 
         EndDrawing();
     }
+
+    UnloadMusicStream(song1);
+    CloseAudioDevice();
 
     return 0;
 }
