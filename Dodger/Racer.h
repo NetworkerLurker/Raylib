@@ -5,9 +5,10 @@
 #ifndef DODGER_RACER_H
 #define DODGER_RACER_H
 
+#include <array>
 #include "raylib.h"
 
-enum class Racers {
+enum class RacerType {
     leftRacer,
     midRacer,
     rightRacer,
@@ -16,13 +17,36 @@ enum class Racers {
 
 class Racer {
 private:
-    Rectangle m_rec{};
-    Racers m_racersType{};
-    float m_rowWidth{};
-    float m_rowHeight{};
+    std::array<std::array<Rectangle , 5>, 3> m_rec{};
+    RacerType m_rType{};
+    int m_moveCooldown{};
+    int m_updateInterval{};
+    int m_position{};
+    bool m_canSpawn{};
+    Color m_color{};
+
 
 public:
-    Racer();
+    Racer(std::array<std::array<Rectangle , 5>, 3>& rec, RacerType&& racerT, int moveCD, int updateInter, int pos, bool canSpawn, Color&& color);
+
+    void drawRacer() const;
+    bool isColliding(Rectangle otherRec) const;
+    void move();
+    void spawn();
+    void addScore();
+    void resetPosition();
+    void decrementMoveCooldown();
+    void resetMoveCooldown();
+    void resetSpawn();
+    void resetUpdateInterval();
+    void increaseUpdateInterval();
+
+    [[nodiscard]] bool canSpawn() const;
+    [[nodiscard]] int getMoveCooldown() const;
+    [[nodiscard]] int getType() const;
+    [[nodiscard]] int getUpdateInterval() const;
+    [[nodiscard]] int getPosition() const;
+    [[nodiscard]] Rectangle getRec() const;
 
 };
 

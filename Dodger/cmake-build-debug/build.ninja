@@ -67,6 +67,13 @@ build CMakeFiles/Dodger.dir/Window.cpp.o: CXX_COMPILER__Dodger_Debug /Users/jay/
   OBJECT_DIR = CMakeFiles/Dodger.dir
   OBJECT_FILE_DIR = CMakeFiles/Dodger.dir
 
+build CMakeFiles/Dodger.dir/Racer.cpp.o: CXX_COMPILER__Dodger_Debug /Users/jay/Documents/GitHub/Raylib/Dodger/Racer.cpp || cmake_object_order_depends_target_Dodger
+  DEP_FILE = CMakeFiles/Dodger.dir/Racer.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.0.sdk -std=gnu++20
+  INCLUDES = -I/opt/homebrew/Cellar/raylib/4.2.0/include -I/Music -isystem /opt/homebrew/include
+  OBJECT_DIR = CMakeFiles/Dodger.dir
+  OBJECT_FILE_DIR = CMakeFiles/Dodger.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Dodger
@@ -75,7 +82,7 @@ build CMakeFiles/Dodger.dir/Window.cpp.o: CXX_COMPILER__Dodger_Debug /Users/jay/
 #############################################
 # Link the executable Dodger
 
-build Dodger: CXX_EXECUTABLE_LINKER__Dodger_Debug CMakeFiles/Dodger.dir/main.cpp.o CMakeFiles/Dodger.dir/Player.cpp.o CMakeFiles/Dodger.dir/Window.cpp.o | /opt/homebrew/lib/libraylib.dylib
+build Dodger: CXX_EXECUTABLE_LINKER__Dodger_Debug CMakeFiles/Dodger.dir/main.cpp.o CMakeFiles/Dodger.dir/Player.cpp.o CMakeFiles/Dodger.dir/Window.cpp.o CMakeFiles/Dodger.dir/Racer.cpp.o | /opt/homebrew/lib/libraylib.dylib
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.0.sdk
   LINK_LIBRARIES = /opt/homebrew/lib/libraylib.dylib
   OBJECT_DIR = CMakeFiles/Dodger.dir
