@@ -48,7 +48,7 @@ int main() {
     std::array<Music, 6> tracks{song1, song2, song3, song4, song5, song6};
     int currentTrack{GetRandomValue(0, tracks.size() - 1)};
     PlayMusicStream(tracks[currentTrack]);
-    float timePlayed;
+    float timePlayed{0};
 
     //SHAPE SETTINGS
     constexpr int rectWidth{winWidth / columns};
@@ -145,11 +145,13 @@ int main() {
         UpdateMusicStream(tracks[currentTrack]);
         timePlayed = GetMusicTimePlayed(tracks[currentTrack])/GetMusicTimeLength(tracks[currentTrack]);
 
-        if (timePlayed >= 1) {
+        if (timePlayed >= 1.0f) {
             if(currentTrack < tracks.size() - 1) {
+                StopMusicStream(tracks[currentTrack]);
                 ++currentTrack;
             }
             else {
+                StopMusicStream(tracks[currentTrack]);
                 currentTrack = 0;
             }
 
@@ -373,7 +375,7 @@ int main() {
         EndDrawing();
     }
 
-    UnloadMusicStream(song1);
+    UnloadMusicStream(tracks[currentTrack]);
     CloseAudioDevice();
 
     return 0;
