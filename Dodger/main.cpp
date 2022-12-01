@@ -31,16 +31,24 @@ int main() {
     window.initialize();
     Window::setDefaultFps(); //sets fps to monitors max refresh rate
 
-    //Audio settings
-    InitAudioDevice();
-    Music song1{LoadMusicStream("Music/Line%20Noise%20-%20Magenta%20Moon%20%28Part%20II%29.mp3")};
-    PlayMusicStream(song1);
-
     constexpr int halfWidth{static_cast<int>(winWidth * 0.5f)};
     constexpr int halfHeight{static_cast<int>(winHeight * 0.5f)};
 
     constexpr int columns = 5;
     constexpr int rows = 5;
+
+    //Audio settings
+    InitAudioDevice();
+    Music song1{LoadMusicStream("Music/JahzzarComedie.mp3")};
+    Music song2{LoadMusicStream("Music/Line%20Noise%20-%20Magenta%20Moon%20%28Part%20II%29.mp3")};
+    Music song3{LoadMusicStream("Music/PARADIGM%20-%20Fiat%20Lux%20%28Linn%20Friberg%29.mp3")};
+    Music song4{LoadMusicStream("Music/Plurabelle%20-%20Light%2C%20Livid.mp3")};
+    Music song5{LoadMusicStream("Music/Scott%20Holmes%20Music%20-%20Neon%20Nights.mp3")};
+    Music song6{LoadMusicStream("Music/Timecrawler%2082%20-%20Turbulence.mp3")};
+    std::array<Music, 6> tracks{song1, song2, song3, song4, song5, song6};
+    int currentTrack{GetRandomValue(0, tracks.size() - 1)};
+    PlayMusicStream(tracks[currentTrack]);
+    float timePlayed;
 
     //SHAPE SETTINGS
     constexpr int rectWidth{winWidth / columns};
@@ -94,6 +102,7 @@ int main() {
     int midPosition{0};
     int rightPosition{0};
 
+    //frame timings for movement
     int lt{0};
     int mt{0};
     int rt{0};
@@ -103,7 +112,6 @@ int main() {
     int leftSpeed{baseRacerSpeed};
     int midSpeed{baseRacerSpeed};
     int rightSpeed{baseRacerSpeed};
-    int speed{0};
 
     int timeToSpawn{baseRacerSpeed * 2};
     int spawnTime{timeToSpawn};
@@ -112,11 +120,19 @@ int main() {
     bool midSpawn = false;
     bool rightSpawn = false;
 
+    //player stats
     int score{0};
     int highscore{0};
     int distance{0};
+    int speed{0};
 
     int frameCounter{0};
+
+    //load highscore
+    std::ifstream iData{"save.txt"};
+    int tempVar;
+    iData >> tempVar;
+    highscore = tempVar;
 
     auto currentState{GameState::logo};
 
@@ -125,6 +141,21 @@ int main() {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
+        //Change track when one is over
+        UpdateMusicStream(tracks[currentTrack]);
+        timePlayed = GetMusicTimePlayed(tracks[currentTrack])/GetMusicTimeLength(tracks[currentTrack]);
+
+        if (timePlayed >= 1) {
+            if(currentTrack < tracks.size() - 1) {
+                ++currentTrack;
+            }
+            else {
+                currentTrack = 0;
+            }
+
+            PlayMusicStream(tracks[currentTrack]);
+        }
+
         switch(currentState) {
             case GameState::logo : {
 
@@ -132,11 +163,6 @@ int main() {
                     currentState = GameState::title;
                     frameCounter = 0;
                 }
-
-                std::ifstream iData{"save.txt"};
-                int tempVar;
-                iData >> tempVar;
-                highscore = tempVar;
 
                 DrawText("Loading", winHeight / 2, halfHeight, 124, DARKBLUE);
                 DrawLine(3 * frameCounter, 0, 3 * frameCounter, winHeight, DARKBLUE);
@@ -157,7 +183,6 @@ int main() {
 
             case GameState::game : {
 
-                UpdateMusicStream(song1);
                 distance = (180 - (speed * 2) ) * frameCounter / GetFPS();
 
                 if(IsKeyReleased(KEY_W)) {
@@ -194,19 +219,34 @@ int main() {
                     speed = rightSpeed;
                 }
 
+                //background gradient
+                DrawRectangleGradientV(0,0,winWidth, halfHeight, DARKBLUE, RAYWHITE);
+                DrawRectangleGradientV(0, halfHeight, winWidth, winHeight, RAYWHITE, GRAY);
+
                 checkMove(player, columns);
                 player.draw();
-
-                DrawText(TextFormat("Dodges: %i",score),winWidth * .70f,winHeight * .05f,36,DARKBLUE);
-                DrawText(TextFormat("Speed: %imph",180 - (speed * 2)),winWidth * .70f,winHeight * .10f,36,DARKBLUE);
-                DrawText(TextFormat("Distance: %i'",distance),winWidth * .70f,winHeight * .15f,36,DARKBLUE);
-
 
                 drawRoad(winHeight, winWidth, halfHeight, halfWidth , DARKBLUE);
                 drawRoadMarkers(winHeight, winWidth, halfHeight, halfWidth , DARKBLUE);
 
+                //draw buildings
+                for(int i{0}; i < 10; ++i) {
+                    int yPosition{i * 30};
+                    DrawRectangleLines(10 * i * i, yPosition, 50 - i, halfHeight - yPosition, DARKBLUE );
+                }
+                for(int i{0}; i < 10; ++i) {
+                    int yPosition{i * 30};
+                    DrawRectangleLines(winWidth - (100 * i), yPosition, 50 + i, halfHeight - yPosition, DARKBLUE );
+                }
+
+                //draw stat trackers
+                DrawText(TextFormat("Dodges: %i",score),winWidth * .70f,winHeight * .05f,36,RAYWHITE);
+                DrawText(TextFormat("Speed: %imph",180 - (speed * 2)),winWidth * .70f,winHeight * .10f,36,RAYWHITE);
+                DrawText(TextFormat("Distance: %i'",distance),winWidth * .70f,winHeight * .15f,36,RAYWHITE);
+
+
                 if(leftSpawn) {
-                    DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::leftRacer)][leftPosition], leftPosition + 1, GREEN);
+                    DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::leftRacer)][leftPosition], leftPosition + 1, BLUE);
                     ++lt;
 
                     if(CheckCollisionRecs(allRacerRecs[static_cast<int>(Racers::leftRacer)][leftPosition], player.getRec())) {
@@ -229,7 +269,7 @@ int main() {
                 }
 
                 if(midSpawn) {
-                    DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::midRacer)][midPosition], midPosition + 1, GREEN);
+                    DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::midRacer)][midPosition], midPosition + 1, BLUE);
                     ++mt;
 
                     if(CheckCollisionRecs(allRacerRecs[static_cast<int>(Racers::midRacer)][midPosition], player.getRec())) {
@@ -253,7 +293,7 @@ int main() {
                 }
 
                 if(rightSpawn) {
-                    DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::rightRacer)][rightPosition], rightPosition + 1, GREEN);
+                    DrawRectangleLinesEx(allRacerRecs[static_cast<int>(Racers::rightRacer)][rightPosition], rightPosition + 1, BLUE);
                     ++rt;
 
                     if(CheckCollisionRecs(allRacerRecs[static_cast<int>(Racers::rightRacer)][rightPosition], player.getRec())) {
@@ -283,6 +323,7 @@ int main() {
 
             case GameState::end : {
 
+                //reset variables
                 leftPosition = 0;
                 midPosition = 0;
                 rightPosition = 0;
@@ -299,6 +340,7 @@ int main() {
                 midSpeed = baseRacerSpeed;
                 rightSpeed = baseRacerSpeed;
 
+                //save highscore
                 if(score > highscore) {
                     highscore = score;
                     data.open("save.txt");
