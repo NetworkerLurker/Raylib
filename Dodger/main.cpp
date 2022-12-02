@@ -19,6 +19,7 @@ enum class GameState {
 void checkMove(Player& player, int columns);
 void drawRoad(int winHeight, int winWidth, int halfHeight, int halfWidth , Color&& color);
 void drawRoadMarkers(int winHeight, int winWidth, int halfHeight, int halfWidth , Color&& color);
+void controlRacer(Racer& racer, GameState& currentState, Player& player, int& score);
 
 int main() {
 
@@ -136,7 +137,9 @@ int main() {
 
     auto currentState{GameState::logo};
 
-    Racer racer{allRacerRecs, RacerType::leftRacer, lt, leftSpeed, leftPosition, leftSpawn, BLUE};
+    Racer racerL{allRacerRecs, RacerType::leftRacer, lt, leftSpeed, leftPosition, leftSpawn, BLUE};
+    Racer racerM{allRacerRecs, RacerType::midRacer, lt, leftSpeed, leftPosition, leftSpawn, BLUE};
+    Racer racerR{allRacerRecs, RacerType::rightRacer, lt, leftSpeed, leftPosition, leftSpawn, BLUE};
 
     while(!WindowShouldClose()) {
 
@@ -190,37 +193,37 @@ int main() {
                 distance = (180 - (speed * 2) ) * frameCounter / GetFPS();
 
                 if(IsKeyReleased(KEY_W)) {
-                    if(racer.getUpdateInterval() > minSpeed) {
-                        racer.increaseUpdateInterval();
-                        timeToSpawn = leftSpeed * 2;
+                    if(racerL.getUpdateInterval() > minSpeed) {
+                        racerL.increaseUpdateInterval();
+                        timeToSpawn = racerL.getUpdateInterval() * 2;
                     }
-                    if(midSpeed > minSpeed) {
-                        --midSpeed;
-                        timeToSpawn = midSpeed * 2;
+                    if(racerM.getUpdateInterval() > minSpeed) {
+                        racerM.increaseUpdateInterval();
+                        timeToSpawn = racerM.getUpdateInterval() * 2;
                     }
-                    if(rightSpeed > minSpeed) {
-                        --rightSpeed;
-                        timeToSpawn = rightSpeed * 2;
+                    if(racerR.getUpdateInterval() > minSpeed) {
+                        racerR.increaseUpdateInterval();
+                        timeToSpawn = racerR.getUpdateInterval() * 2;
                     }
                 }
 
                 if(spawnTime > timeToSpawn) {
                     switch(GetRandomValue(1, 4)) {
-                        case 1: racer.spawn(); break;
-                        case 2: midSpawn = true; break;
-                        case 3: rightSpawn = true; break;
+                        case 1: racerL.spawn(); break;
+                        case 2: racerM.spawn(); break;
+                        case 3: racerR.spawn(); break;
                     }
 
                     spawnTime = 0;
                 }
 
-                if(leftSpeed < rightSpeed && midSpeed) {
-                    speed = leftSpeed;
-                } else if ( midSpeed < rightSpeed && leftSpeed ) {
-                    speed = midSpeed;
+                if(racerL.getUpdateInterval() < racerM.getUpdateInterval() && racerR.getUpdateInterval()) {
+                    speed = racerL.getUpdateInterval();
+                } else if ( racerM.getUpdateInterval() < racerL.getUpdateInterval() && racerR.getUpdateInterval() ) {
+                    speed = racerM.getUpdateInterval();
                 } else
                 {
-                    speed = rightSpeed;
+                    speed = racerR.getUpdateInterval();
                 }
 
                 //background gradient
@@ -248,88 +251,9 @@ int main() {
                 DrawText(TextFormat("Speed: %imph",180 - (speed * 2)),winWidth * .70f,winHeight * .10f,36,RAYWHITE);
                 DrawText(TextFormat("Distance: %i'",distance),winWidth * .70f,winHeight * .15f,36,RAYWHITE);
 
-
-                if(racer.canSpawn()) {
-                    racer.drawRacer();
-                    racer.decrementMoveCooldown();
-
-                    if(racer.isColliding(player.getRec())) {
-                        currentState = GameState::end;
-                    }
-
-                    if(racer.getMoveCooldown() > racer.getUpdateInterval()) {
-                        racer.move();
-                        racer.resetMoveCooldown();
-
-                        if (racer.getPosition() > leftRacerRecs.size() - 1) {
-                            ++score;
-                            racer.resetPosition();
-                            racer.resetMoveCooldown();
-
-                            if(racer.getUpdateInterval() > minSpeed) {
-                                racer.increaseUpdateInterval();
-                            }
-
-                            racer.resetSpawn();
-                        }
-                    }
-                }
-
-//                //racer.canSpawn()
-//                if(midSpawn) {
-//                    //racer.drawRacer();
-//                    //racer.decrementMoveCooldown()
-//                    DrawRectangleLinesEx(allRacerRecs[static_cast<int>(RacerType::midRacer)][midPosition], midPosition + 1, BLUE);
-//                    ++mt;
-//
-//                    //if(racer.isColliding(player.getRec()))
-//                    if(CheckCollisionRecs(allRacerRecs[static_cast<int>(RacerType::midRacer)][midPosition], player.getRec())) {
-//                        currentState = GameState::end;
-//                    }
-//
-//                    //if(racer.getMoveCooldown() > racer.getUpdateInterval())
-//                        //racer.move();
-//                        //racer.resetMoveCooldown()
-//                    if(mt > midSpeed) {
-//                        ++midPosition;
-//                        mt = 0;
-//
-//                        if (midPosition > middleRacerRecs.size() - 1) {
-//                            score++;
-//                            midPosition = 0;
-//                            mt = 0;
-//                            if(midSpeed > minSpeed) {
-//                                --midSpeed;
-//                            }
-//                            midSpawn = false;
-//                        }
-//                    }
-//                }
-
-                if(rightSpawn) {
-                    DrawRectangleLinesEx(allRacerRecs[static_cast<int>(RacerType::rightRacer)][rightPosition], rightPosition + 1, BLUE);
-                    ++rt;
-
-                    if(CheckCollisionRecs(allRacerRecs[static_cast<int>(RacerType::rightRacer)][rightPosition], player.getRec())) {
-                        currentState = GameState::end;
-                    }
-
-                    if(rt > rightSpeed) {
-                        ++rightPosition;
-                        rt = 0;
-
-                        if (rightPosition > rightRacerRecs.size() - 1) {
-                            score++;
-                            rightPosition = 0;
-                            rt = 0;
-                            if(rightSpeed > minSpeed) {
-                                --rightSpeed;
-                            }
-                            rightSpawn = false;
-                        }
-                    }
-
-                }
+                controlRacer(racerL, currentState, player, score);
+                controlRacer(racerM, currentState, player, score);
+                controlRacer(racerR, currentState, player, score);
 
                 ++spawnTime;
                 ++frameCounter;
@@ -338,21 +262,21 @@ int main() {
             case GameState::end : {
 
                 //reset variables
-                racer.resetPosition();
-                midPosition = 0;
-                rightPosition = 0;
+                racerL.resetPosition();
+                racerM.resetPosition();
+                racerR.resetPosition();
 
-                racer.resetMoveCooldown();
-                mt = 0;
-                rt = 0;
+                racerL.resetMoveCooldown();
+                racerM.resetMoveCooldown();
+                racerR.resetMoveCooldown();
 
-                racer.resetSpawn();
-                midPosition = false;
-                rightPosition = false;
+                racerL.resetSpawn();
+                racerM.resetSpawn();
+                racerR.resetSpawn();
 
-                racer.resetUpdateInterval();
-                midSpeed = baseRacerSpeed;
-                rightSpeed = baseRacerSpeed;
+                racerL.resetUpdateInterval();
+                racerM.resetUpdateInterval();
+                racerR.resetUpdateInterval();
 
                 //save highscore
                 if(score > highscore) {
@@ -391,6 +315,34 @@ int main() {
     CloseAudioDevice();
 
     return 0;
+}
+
+void controlRacer(Racer& racer, GameState& currentState, Player& player, int& score) {
+    if(racer.canSpawn()) {
+        racer.drawRacer();
+        racer.decrementMoveCooldown();
+
+        if(racer.isColliding(player.getRec())) {
+            currentState = GameState::end;
+        }
+
+        if(racer.getMoveCooldown() > racer.getUpdateInterval()) {
+            racer.move();
+            racer.resetMoveCooldown();
+
+            if (racer.getPosition() > 4) {
+                ++score;
+                racer.resetPosition();
+                racer.resetMoveCooldown();
+
+                if(racer.getUpdateInterval() > 15) {
+                    racer.increaseUpdateInterval();
+                }
+
+                racer.resetSpawn();
+            }
+        }
+    }
 }
 
 void checkMove(Player& player, int columns) {
