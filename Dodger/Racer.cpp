@@ -3,7 +3,7 @@
 //
 #include "Racer.h"
 
-Racer::Racer(std::array<std::array<Rectangle , 5>, 3>& rec, RacerType&& racerT, int moveCD, int updateInter, int pos, bool canSpawn, Color&& color) :
+Racer::Racer(std::array<std::array<Rectangle , 5>, 3>& rec, RacerType&& racerT, int moveCD, int updateInter, int pos, bool canSpawn, Color& color) :
     m_rec{rec},
     m_rType{racerT},
     m_moveCooldown{moveCD},

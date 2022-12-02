@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include <array>
 #include <fstream>
+#include <vector>
 
 #include "Window.h"
 #include "Player.h"
@@ -40,28 +41,30 @@ int main() {
 
     //Audio settings
     InitAudioDevice();
-    Music song1{LoadMusicStream("Music/JahzzarComedie.mp3")};
-    Music song2{LoadMusicStream("Music/Line%20Noise%20-%20Magenta%20Moon%20%28Part%20II%29.mp3")};
-    Music song3{LoadMusicStream("Music/PARADIGM%20-%20Fiat%20Lux%20%28Linn%20Friberg%29.mp3")};
-    Music song4{LoadMusicStream("Music/Plurabelle%20-%20Light%2C%20Livid.mp3")};
-    Music song5{LoadMusicStream("Music/Scott%20Holmes%20Music%20-%20Neon%20Nights.mp3")};
-    Music song6{LoadMusicStream("Music/Timecrawler%2082%20-%20Turbulence.mp3")};
-    std::array<Music, 6> tracks{song1, song2, song3, song4, song5, song6};
-    int currentTrack{GetRandomValue(0, tracks.size() - 1)};
+
+    std::vector<Music> tracks{};
+    std::string musicPath{"Music"};
+
+    for (const auto& entry : std::filesystem::directory_iterator(musicPath)) {
+        tracks.push_back(LoadMusicStream(entry.path().c_str()));
+    }
+
+
+    int currentTrack{GetRandomValue(0, static_cast<int>(tracks.size() - 1))};
     PlayMusicStream(tracks[currentTrack]);
     float timePlayed{0};
 
-    //SHAPE SETTINGS
+    //Shape settings
     constexpr int rectWidth{winWidth / columns};
     constexpr int rectHeight{halfHeight / rows};
 
-    //player
+    //Player settings
     constexpr int startRow{1};
     constexpr int startColumn{2};
     Rectangle playerRect{rectWidth * startColumn, winHeight - (rectHeight * startRow), rectWidth, rectHeight};
     Player player{playerRect, DARKBLUE};
 
-    //racers
+    //Racer settings
     float row2Width{rectWidth * .75f};
     float row3Width{rectWidth *.50f};
     float row4Width{rectWidth *.25f};
@@ -99,27 +102,27 @@ int main() {
 
     std::array<std::array<Rectangle , 5>, 3> allRacerRecs{leftRacerRecs, middleRacerRecs, rightRacerRecs};
 
-    int leftPosition{0};
-    int midPosition{0};
-    int rightPosition{0};
+    int racerPosition{0};
 
     //frame timings for movement
     int lt{0};
-    int mt{0};
-    int rt{0};
 
-    int baseRacerSpeed{60};
+    int baseRacerUpdateInterval{60};
     int minSpeed{10};
-    int leftSpeed{baseRacerSpeed};
-    int midSpeed{baseRacerSpeed};
-    int rightSpeed{baseRacerSpeed};
+    int racerUpdateInterval{baseRacerUpdateInterval};
 
-    int timeToSpawn{baseRacerSpeed * 2};
+    int timeToSpawn{baseRacerUpdateInterval * 2};
     int spawnTime{timeToSpawn};
 
-    bool leftSpawn = false;
-    bool midSpawn = false;
-    bool rightSpawn = false;
+    bool racerCamSpawn = false;
+
+    Color racerColor{BLUE};
+
+    Racer racerL{allRacerRecs, RacerType::leftRacer, lt, racerUpdateInterval, racerPosition, racerCamSpawn, racerColor};
+    Racer racerM{allRacerRecs, RacerType::midRacer, lt, racerUpdateInterval, racerPosition, racerCamSpawn, racerColor};
+    Racer racerR{allRacerRecs, RacerType::rightRacer, lt, racerUpdateInterval, racerPosition, racerCamSpawn, racerColor};
+
+
 
     //player stats
     int score{0};
@@ -136,10 +139,6 @@ int main() {
     highscore = tempVar;
 
     auto currentState{GameState::logo};
-
-    Racer racerL{allRacerRecs, RacerType::leftRacer, lt, leftSpeed, leftPosition, leftSpawn, BLUE};
-    Racer racerM{allRacerRecs, RacerType::midRacer, lt, leftSpeed, leftPosition, leftSpawn, BLUE};
-    Racer racerR{allRacerRecs, RacerType::rightRacer, lt, leftSpeed, leftPosition, leftSpawn, BLUE};
 
     while(!WindowShouldClose()) {
 
@@ -287,8 +286,8 @@ int main() {
                 }
 
                 score = 0;
-                timeToSpawn = baseRacerSpeed * 2;
-                speed = baseRacerSpeed;
+                timeToSpawn = baseRacerUpdateInterval * 2;
+                speed = baseRacerUpdateInterval;
                 frameCounter = 0;
 
                 drawRoad(winHeight, winWidth, halfHeight, halfWidth , DARKBLUE);

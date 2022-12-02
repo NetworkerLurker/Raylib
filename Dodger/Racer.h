@@ -27,7 +27,7 @@ private:
 
 
 public:
-    Racer(std::array<std::array<Rectangle , 5>, 3>& rec, RacerType&& racerT, int moveCD, int updateInter, int pos, bool canSpawn, Color&& color);
+    Racer(std::array<std::array<Rectangle , 5>, 3>& rec, RacerType&& racerT, int moveCD, int updateInter, int pos, bool canSpawn, Color& color);
 
     void drawRacer() const;
     bool isColliding(Rectangle otherRec) const;
