@@ -21,10 +21,9 @@ void checkMove(Player& player, int columns);
 void drawRoad(int winHeight, int winWidth, int halfHeight, int halfWidth , Color&& color);
 void drawRoadMarkers(int winHeight, int winWidth, int halfHeight, int halfWidth , Color&& color);
 void controlRacer(Racer& racer, GameState& currentState, Player& player, int& score);
+void resetRacer(Racer& racer);
 
 int main() {
-
-    std::ofstream data{};
 
     //Window settings
     constexpr int winWidth{960};
@@ -45,10 +44,10 @@ int main() {
     std::vector<Music> tracks{};
     std::string musicPath{"Music"};
 
+    //Load music into vector
     for (const auto& entry : std::filesystem::directory_iterator(musicPath)) {
         tracks.push_back(LoadMusicStream(entry.path().c_str()));
     }
-
 
     int currentTrack{GetRandomValue(0, static_cast<int>(tracks.size() - 1))};
     PlayMusicStream(tracks[currentTrack]);
@@ -69,43 +68,40 @@ int main() {
     float row3Width{rectWidth *.50f};
     float row4Width{rectWidth *.25f};
     float row5Width{rectWidth *.12};
-    
+
     float row2Height{rectHeight *.75f};
     float row3Height{rectHeight *.50f};
     float row4Height{rectHeight *.25f};
     float row5Height{rectHeight *.12f};
-    
+
     //closest to furthest
     Rectangle leftRacer1{rectWidth * .5f, winHeight - (rectHeight * 1), rectWidth, rectHeight};
-    Rectangle middleRacer1{rectWidth * 2, winHeight - (rectHeight * 1), rectWidth, rectHeight};
-    Rectangle rightRacer1{rectWidth * 3.5f, winHeight - (rectHeight * 1), rectWidth, rectHeight};
-
     Rectangle leftRacer2{rectWidth * 1, winHeight - (rectHeight * 2), row2Width, row2Height};
-    Rectangle middleRacer2{rectWidth * 2.12, winHeight - (rectHeight * 2), row2Width, row2Height};
-    Rectangle rightRacer2{rectWidth * 3.25, winHeight - (rectHeight * 2), row2Width, row2Height};
-
     Rectangle leftRacer3{rectWidth * 1.5, winHeight - (rectHeight * 3), row3Width, row3Height};
-    Rectangle middleRacer3{rectWidth * 2.25, winHeight - (rectHeight * 3), row3Width, row3Height};
-    Rectangle rightRacer3{rectWidth * 3.0, winHeight - (rectHeight * 3), row3Width, row3Height};
-
     Rectangle leftRacer4{rectWidth * 2, winHeight - (rectHeight * 4), row4Width, row4Height};
-    Rectangle middleRacer4{rectWidth * 2.37, winHeight - (rectHeight * 4), row4Width, row4Height};
-    Rectangle rightRacer4{rectWidth * 2.75, winHeight - (rectHeight * 4), row4Width, row4Height};
-
     Rectangle leftRacer5{rectWidth * 2.25f, winHeight - (rectHeight * 4.5), row5Width, row5Height};
+
+    Rectangle middleRacer1{rectWidth * 2, winHeight - (rectHeight * 1), rectWidth, rectHeight};
+    Rectangle middleRacer2{rectWidth * 2.12, winHeight - (rectHeight * 2), row2Width, row2Height};
+    Rectangle middleRacer3{rectWidth * 2.25, winHeight - (rectHeight * 3), row3Width, row3Height};
+    Rectangle middleRacer4{rectWidth * 2.37, winHeight - (rectHeight * 4), row4Width, row4Height};
     Rectangle middleRacer5{rectWidth * 2.44f, winHeight - (rectHeight * 4.5), row5Width, row5Height};
+
+    Rectangle rightRacer1{rectWidth * 3.5f, winHeight - (rectHeight * 1), rectWidth, rectHeight};
+    Rectangle rightRacer2{rectWidth * 3.25, winHeight - (rectHeight * 2), row2Width, row2Height};
+    Rectangle rightRacer3{rectWidth * 3.0, winHeight - (rectHeight * 3), row3Width, row3Height};
+    Rectangle rightRacer4{rectWidth * 2.75, winHeight - (rectHeight * 4), row4Width, row4Height};
     Rectangle rightRacer5{rectWidth * 2.63f, winHeight - (rectHeight * 4.5), row5Width, row5Height};
 
     std::array<Rectangle, 5> leftRacerRecs{leftRacer5, leftRacer4, leftRacer3, leftRacer2, leftRacer1};
     std::array<Rectangle, 5> middleRacerRecs{middleRacer5, middleRacer4, middleRacer3, middleRacer2, middleRacer1};
     std::array<Rectangle, 5> rightRacerRecs{rightRacer5, rightRacer4, rightRacer3, rightRacer2, rightRacer1};
-
     std::array<std::array<Rectangle , 5>, 3> allRacerRecs{leftRacerRecs, middleRacerRecs, rightRacerRecs};
 
     int racerPosition{0};
 
     //frame timings for movement
-    int lt{0};
+    int racerMoveCooldown{0};
 
     int baseRacerUpdateInterval{60};
     int minSpeed{10};
@@ -118,11 +114,9 @@ int main() {
 
     Color racerColor{BLUE};
 
-    Racer racerL{allRacerRecs, RacerType::leftRacer, lt, racerUpdateInterval, racerPosition, racerCamSpawn, racerColor};
-    Racer racerM{allRacerRecs, RacerType::midRacer, lt, racerUpdateInterval, racerPosition, racerCamSpawn, racerColor};
-    Racer racerR{allRacerRecs, RacerType::rightRacer, lt, racerUpdateInterval, racerPosition, racerCamSpawn, racerColor};
-
-
+    Racer racerL{allRacerRecs, RacerType::leftRacer, racerMoveCooldown, racerUpdateInterval, racerPosition, racerCamSpawn, racerColor};
+    Racer racerM{allRacerRecs, RacerType::midRacer, racerMoveCooldown, racerUpdateInterval, racerPosition, racerCamSpawn, racerColor};
+    Racer racerR{allRacerRecs, RacerType::rightRacer, racerMoveCooldown, racerUpdateInterval, racerPosition, racerCamSpawn, racerColor};
 
     //player stats
     int score{0};
@@ -132,11 +126,10 @@ int main() {
 
     int frameCounter{0};
 
-    //load highscore
+    //save/load highscore
+    std::ofstream data{};
     std::ifstream iData{"save.txt"};
-    int tempVar;
-    iData >> tempVar;
-    highscore = tempVar;
+    iData >> highscore;
 
     auto currentState{GameState::logo};
 
@@ -260,22 +253,10 @@ int main() {
 
             case GameState::end : {
 
-                //reset variables
-                racerL.resetPosition();
-                racerM.resetPosition();
-                racerR.resetPosition();
 
-                racerL.resetMoveCooldown();
-                racerM.resetMoveCooldown();
-                racerR.resetMoveCooldown();
-
-                racerL.resetSpawn();
-                racerM.resetSpawn();
-                racerR.resetSpawn();
-
-                racerL.resetUpdateInterval();
-                racerM.resetUpdateInterval();
-                racerR.resetUpdateInterval();
+                resetRacer(racerL);
+                resetRacer(racerM);
+                resetRacer(racerR);
 
                 //save highscore
                 if(score > highscore) {
@@ -342,6 +323,13 @@ void controlRacer(Racer& racer, GameState& currentState, Player& player, int& sc
             }
         }
     }
+}
+
+void resetRacer(Racer& racer) {
+    racer.resetPosition();
+    racer.resetMoveCooldown();
+    racer.resetSpawn();
+    racer.resetUpdateInterval();
 }
 
 void checkMove(Player& player, int columns) {

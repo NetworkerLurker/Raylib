@@ -22,7 +22,6 @@ bool Racer::isColliding(Rectangle otherRec) const {
 }
 
 void Racer::move() { ++m_position; }
-void Racer::addScore() {}
 void Racer::resetPosition() { m_position = 0; }
 void Racer::decrementMoveCooldown() { ++m_moveCooldown; }
 void Racer::resetMoveCooldown() { m_moveCooldown = 0; }
