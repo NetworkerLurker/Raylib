@@ -20,6 +20,8 @@ void Window::initialize() const {
     InitWindow(getWidth(), getHeight(), getTitle());
 };
 
-[[nodiscard]] int Window::getWidth() const { return m_width; }
-[[nodiscard]] int Window::getHeight() const { return m_height; }
-[[nodiscard]] const char* Window::getTitle() const { return m_title; }
+int Window::getWidth() const { return m_width; }
+int Window::getHeight() const { return m_height; }
+int Window::getHalfWidth() const { return m_width * .5f; }
+int Window::getHalfHeight() const { return m_height * .5f; }
+const char* Window::getTitle() const { return m_title; }

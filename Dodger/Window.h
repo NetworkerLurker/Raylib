@@ -27,6 +27,8 @@ public:
 
     [[nodiscard]] int getWidth() const;
     [[nodiscard]] int getHeight() const;
+    [[nodiscard]] int getHalfHeight() const;
+    [[nodiscard]] int getHalfWidth() const;
     [[nodiscard]] const char* getTitle() const;
 };
 

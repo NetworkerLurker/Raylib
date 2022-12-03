@@ -28,7 +28,7 @@ void Racer::resetMoveCooldown() { m_moveCooldown = 0; }
 void Racer::spawn() { m_canSpawn = true;}
 void Racer::resetSpawn() { m_canSpawn = false; }
 void Racer::resetUpdateInterval() { m_updateInterval = 60; }
-void Racer::increaseUpdateInterval() { --m_updateInterval; }
+void Racer::decreaseUpdateInterval() { --m_updateInterval; }
 
 bool Racer::canSpawn() const { return m_canSpawn; }
 int Racer::getMoveCooldown() const { return m_moveCooldown; }

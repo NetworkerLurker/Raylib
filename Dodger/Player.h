@@ -14,17 +14,13 @@ private:
 
 public:
     explicit Player(Rectangle& rec, Color&& color);
-    explicit Player(Rectangle& rec, Color& color);
 
     void draw() const;
-
     void moveLeft();
     void moveRight();
 
-    void changeColor(Color c);
-
-    [[nodiscard]] Rectangle getRec() const;
     [[nodiscard]] Color getColor() const;
+    [[nodiscard]] Rectangle getRec() const;
 };
 
 #endif //DODGER_PLAYER_H

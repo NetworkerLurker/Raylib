@@ -39,7 +39,7 @@ public:
     void resetMoveCooldown();
     void resetSpawn();
     void resetUpdateInterval();
-    void increaseUpdateInterval();
+    void decreaseUpdateInterval();
 
     [[nodiscard]] bool canSpawn() const;
     [[nodiscard]] int getMoveCooldown() const;
