@@ -57,39 +57,37 @@ int main() {
     int playerSpeed{0};
 
     //Racer settings
-    float row2Width{rectWidth * .75f};
-    float row3Width{rectWidth *.50f};
-    float row4Width{rectWidth *.25f};
-    float row5Width{rectWidth *.12f};
+    std::array<float, 5> sizeScalers{0.12, 0.25f, 0.50f, 0.75f, 1.00f};
+    std::array<float, 5> yPositions{4.5f, 4.0f, 3.0f, 2.0f, 1.0f};
+    std::array<float, 5> xPositionsL{2.25f, 2.00, 1.50f, 1.00f, 0.50f};
+    std::array<float, 5> xPositionsM{2.44f, 2.37f, 2.25f, 2.12f, 2.00f};
+    std::array<float, 5> xPositionsR{2.63f, 2.75f, 3.00f, 3.25f, 3.50f};
+    std::array<Rectangle, 5> leftRacerRecs{};
+    std::array<Rectangle, 5> midRacerRecs{};
+    std::array<Rectangle, 5> rightRacerRecs{};
 
-    float row2Height{rectHeight *.75f};
-    float row3Height{rectHeight *.50f};
-    float row4Height{rectHeight *.25f};
-    float row5Height{rectHeight *.12f};
+    for(int i{0}; i < leftRacerRecs.size(); ++i) {
+        {
+            leftRacerRecs[i] = Rectangle{rectWidth * xPositionsL[i], winHeight - (rectHeight * yPositions[i]),
+                                         rectWidth * sizeScalers[i], rectHeight * sizeScalers[i]};
+        }
+    }
 
-    //Racer rectangles closest to furthest
-    Rectangle leftRacer1{rectWidth * .5f, winHeight - (rectHeight * 1), rectWidth, rectHeight};
-    Rectangle leftRacer2{rectWidth * 1, winHeight - (rectHeight * 2), row2Width, row2Height};
-    Rectangle leftRacer3{rectWidth * 1.5, winHeight - (rectHeight * 3), row3Width, row3Height};
-    Rectangle leftRacer4{rectWidth * 2, winHeight - (rectHeight * 4), row4Width, row4Height};
-    Rectangle leftRacer5{rectWidth * 2.25f, winHeight - (rectHeight * 4.5), row5Width, row5Height};
+    for(int i{0}; i < midRacerRecs.size(); ++i) {
+        {
+            midRacerRecs[i] = Rectangle{rectWidth * xPositionsM[i], winHeight - (rectHeight * yPositions[i]),
+                                        rectWidth * sizeScalers[i], rectHeight * sizeScalers[i]};
+        }
+    }
 
-    Rectangle middleRacer1{rectWidth * 2, winHeight - (rectHeight * 1), rectWidth, rectHeight};
-    Rectangle middleRacer2{rectWidth * 2.12, winHeight - (rectHeight * 2), row2Width, row2Height};
-    Rectangle middleRacer3{rectWidth * 2.25, winHeight - (rectHeight * 3), row3Width, row3Height};
-    Rectangle middleRacer4{rectWidth * 2.37, winHeight - (rectHeight * 4), row4Width, row4Height};
-    Rectangle middleRacer5{rectWidth * 2.44f, winHeight - (rectHeight * 4.5), row5Width, row5Height};
+    for(int i{0}; i < rightRacerRecs.size(); ++i) {
+        {
+            rightRacerRecs[i] = Rectangle{rectWidth * xPositionsR[i], winHeight - (rectHeight * yPositions[i]),
+                                          rectWidth * sizeScalers[i], rectHeight * sizeScalers[i]};
+        }
+    }
 
-    Rectangle rightRacer1{rectWidth * 3.5f, winHeight - (rectHeight * 1), rectWidth, rectHeight};
-    Rectangle rightRacer2{rectWidth * 3.25, winHeight - (rectHeight * 2), row2Width, row2Height};
-    Rectangle rightRacer3{rectWidth * 3.0, winHeight - (rectHeight * 3), row3Width, row3Height};
-    Rectangle rightRacer4{rectWidth * 2.75, winHeight - (rectHeight * 4), row4Width, row4Height};
-    Rectangle rightRacer5{rectWidth * 2.63f, winHeight - (rectHeight * 4.5), row5Width, row5Height};
-
-    std::array<Rectangle, 5> leftRacerRecs{leftRacer5, leftRacer4, leftRacer3, leftRacer2, leftRacer1};
-    std::array<Rectangle, 5> middleRacerRecs{middleRacer5, middleRacer4, middleRacer3, middleRacer2, middleRacer1};
-    std::array<Rectangle, 5> rightRacerRecs{rightRacer5, rightRacer4, rightRacer3, rightRacer2, rightRacer1};
-    std::array<std::array<Rectangle , 5>, 3> allRacerRecs{leftRacerRecs, middleRacerRecs, rightRacerRecs};
+    std::array<std::array<Rectangle , 5>, 3> allRacerRecs{leftRacerRecs, midRacerRecs, rightRacerRecs};
 
     //Timings for movement in frames per second
     int racerMoveCooldown{0};
