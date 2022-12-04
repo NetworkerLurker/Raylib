@@ -8,7 +8,7 @@
 #include "Window.h"
 
 void drawBuildings(Window& window, Color& color);
-void drawGameOverScreen(Window& window, int highscore, int fontsize, Color& color);
+void drawGameOverScreen(Window& window, int highscore, int score, int fontsize, Color& color);
 void drawLogoScreen(Window& window, int frameCounter, int fontSize, Color& color);
 void drawRoad(Window& window, Color& color);
 void drawRoadMarkers(Window& window , Color& color);

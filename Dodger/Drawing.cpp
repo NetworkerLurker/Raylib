@@ -7,19 +7,15 @@ void drawBuildings(Window& window, Color& color) {
     for(int i{0}; i < 10; ++i) {
         int yPosition{i * 30};
         DrawRectangleLines(10 * i * i, yPosition, 50 - i, window.getHalfHeight() - yPosition, color );
-    }
-
-    for(int i{0}; i < 10; ++i) {
-        int yPosition{i * 30};
         DrawRectangleLines(window.getWidth() - (100 * i), yPosition, 50 + i, window.getHalfHeight() - yPosition, color );
     }
 }
 
-void drawGameOverScreen(Window& window, int highscore, int fontsize, Color& color) {
-    DrawText("Press R To Retry", window.getWidth() * .35f, window.getHeight() * .30f, fontsize, color);
-    DrawText("Press ESC To Quit", window.getWidth() * .35f, window.getHeight() * .40f, fontsize, color);
-    DrawText("Highscore:", window.getWidth() * .40f, window.getHeight() * .20f, fontsize, color);
-    DrawText(TextFormat("%i",highscore),window.getWidth() * .61f,window.getHeight() * .20f,fontsize,color);
+void drawGameOverScreen(Window& window, int highscore, int score, int fontsize, Color& color) {
+    DrawText("Press R To Retry", window.getWidth() * .34f, window.getHeight() * .30f, fontsize, color);
+    DrawText("Press ESC To Quit", window.getWidth() * .34f, window.getHeight() * .40f, fontsize, color);
+    DrawText(TextFormat("Highscore: %i", highscore),window.getWidth() * .38f,window.getHeight() * .10f,fontsize,color);
+    DrawText(TextFormat("Your Score: %i", score),window.getWidth() * .38f,window.getHeight() * .20f,fontsize,color);
 }
 
 void drawLogoScreen(Window& window, int frameCounter, int fontSize, Color& color) {

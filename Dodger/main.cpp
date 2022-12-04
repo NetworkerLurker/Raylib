@@ -6,12 +6,14 @@ int main() {
     // Window settings
     constexpr int winWidth{960};
     constexpr int winHeight{static_cast<int>(winWidth * .75f)}; // Keeps the aspect ratio (4:3)
+    constexpr int halfHeight{static_cast<int>(winHeight * 0.5f)};
     std::string title{"Dodger"};
     Window window{winWidth, winHeight, title.c_str()};
     window.initialize();
     Window::setDefaultFps(); // Sets fps to monitors max refresh rate
 
-    int frameCounter{0};
+    constexpr int columns = 5;
+    constexpr int rows = 5;
 
     // Colors
     Color fontColor{DARKBLUE};
@@ -21,12 +23,7 @@ int main() {
     Color racerColor{BLUE};
     Color statsColor{RAYWHITE};
 
-    constexpr int halfHeight{static_cast<int>(winHeight * 0.5f)};
-
-    constexpr int columns = 5;
-    constexpr int rows = 5;
-
-    // Audio settings
+    // Audio setup
     InitAudioDevice();
     std::vector<Music> tracks{};
     std::string musicPath{"Music"};
@@ -36,15 +33,16 @@ int main() {
         tracks.push_back(LoadMusicStream(entry.path().c_str()));
     }
 
+    // Start with a random track
     int currentTrack{GetRandomValue(0, static_cast<int>(tracks.size() - 1))};
     PlayMusicStream(tracks[currentTrack]);
     float timePlayed{0};
 
-    // Shape settings
+    // Base rectangle settings
     constexpr int rectWidth{winWidth / columns};
     constexpr int rectHeight{halfHeight / rows};
 
-    // Player settings
+    // Player setup
     constexpr int startColumn{2};
     constexpr int startRow{1};
     Rectangle playerRect{rectWidth * startColumn, winHeight - (rectHeight * startRow), rectWidth, rectHeight};
@@ -71,18 +69,8 @@ int main() {
         {
             leftRacerRecs[i] = Rectangle{rectWidth * xPositionsL[i], winHeight - (rectHeight * yPositions[i]),
                                          rectWidth * sizeScalers[i], rectHeight * sizeScalers[i]};
-        }
-    }
-
-    for(int i{0}; i < midRacerRecs.size(); ++i) {
-        {
             midRacerRecs[i] = Rectangle{rectWidth * xPositionsM[i], winHeight - (rectHeight * yPositions[i]),
                                         rectWidth * sizeScalers[i], rectHeight * sizeScalers[i]};
-        }
-    }
-
-    for(int i{0}; i < rightRacerRecs.size(); ++i) {
-        {
             rightRacerRecs[i] = Rectangle{rectWidth * xPositionsR[i], winHeight - (rectHeight * yPositions[i]),
                                           rectWidth * sizeScalers[i], rectHeight * sizeScalers[i]};
         }
@@ -91,6 +79,7 @@ int main() {
     std::array<std::array<Rectangle , 5>, 3> allRacerRecs{leftRacerRecs, midRacerRecs, rightRacerRecs};
 
     // Timings for movement in frames per second
+    int frameCounter{0};
     int baseRacerUpdateInterval{60};
     int minUpdateInterval{10};
     int racerMoveCooldown{0};
@@ -112,7 +101,7 @@ int main() {
     inputPlayerHSFile >> highscore;
 
     // Set entry state
-    auto currentState{GameState::logo};
+    auto currentState{GameState::end};
 
     // Game loop
     while(!WindowShouldClose()) {
@@ -220,13 +209,12 @@ int main() {
 
                 updateSaveHighscore(score, highscore, playerHSFile);
 
-                score = 0;
-
                 drawRoad(window, roadColor);
                 drawRoadMarkers(window, roadMarkerColor);
-                drawGameOverScreen(window, highscore, 36, fontColor);
+                drawGameOverScreen(window, highscore, score, 36, fontColor);
 
                 if(IsKeyPressed(KEY_R)) {
+                    score = 0;
                     currentState = GameState::game;
                 }
 
