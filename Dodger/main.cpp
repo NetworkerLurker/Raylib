@@ -3,17 +3,17 @@
 
 int main() {
 
-    //Window settings
+    // Window settings
     constexpr int winWidth{960};
-    constexpr int winHeight{static_cast<int>(winWidth * .75f)}; //we can change the winWidth and keep the same aspect ratio
+    constexpr int winHeight{static_cast<int>(winWidth * .75f)}; // Keeps the aspect ratio (4:3)
     std::string title{"Dodger"};
     Window window{winWidth, winHeight, title.c_str()};
     window.initialize();
-    Window::setDefaultFps(); //sets fps to monitors max refresh rate
+    Window::setDefaultFps(); // Sets fps to monitors max refresh rate
 
     int frameCounter{0};
 
-    //Colors
+    // Colors
     Color fontColor{DARKBLUE};
     Color roadColor{DARKBLUE};
     Color roadMarkerColor{DARKBLUE};
@@ -26,12 +26,12 @@ int main() {
     constexpr int columns = 5;
     constexpr int rows = 5;
 
-    //Audio settings
+    // Audio settings
     InitAudioDevice();
     std::vector<Music> tracks{};
     std::string musicPath{"Music"};
 
-    //Load music into vector
+    // Load music into vector
     for (const auto& entry : std::filesystem::directory_iterator(musicPath)) {
         tracks.push_back(LoadMusicStream(entry.path().c_str()));
     }
@@ -40,23 +40,23 @@ int main() {
     PlayMusicStream(tracks[currentTrack]);
     float timePlayed{0};
 
-    //Shape settings
+    // Shape settings
     constexpr int rectWidth{winWidth / columns};
     constexpr int rectHeight{halfHeight / rows};
 
-    //Player settings
-    constexpr int startRow{1};
+    // Player settings
     constexpr int startColumn{2};
+    constexpr int startRow{1};
     Rectangle playerRect{rectWidth * startColumn, winHeight - (rectHeight * startRow), rectWidth, rectHeight};
     Player player{playerRect, DARKBLUE};
 
-    //Player stats
-    int score{0};
+    // Player stats
     int highscore{0};
+    int score{0};
     int playerDistanceTraveled;
     int playerSpeed{0};
 
-    //Racer settings
+    // Possible racer positions
     std::array<float, 5> sizeScalers{0.12, 0.25f, 0.50f, 0.75f, 1.00f};
     std::array<float, 5> yPositions{4.5f, 4.0f, 3.0f, 2.0f, 1.0f};
     std::array<float, 5> xPositionsL{2.25f, 2.00, 1.50f, 1.00f, 0.50f};
@@ -66,6 +66,7 @@ int main() {
     std::array<Rectangle, 5> midRacerRecs{};
     std::array<Rectangle, 5> rightRacerRecs{};
 
+    // Creating rectangles for all possible racer positions
     for(int i{0}; i < leftRacerRecs.size(); ++i) {
         {
             leftRacerRecs[i] = Rectangle{rectWidth * xPositionsL[i], winHeight - (rectHeight * yPositions[i]),
@@ -89,37 +90,37 @@ int main() {
 
     std::array<std::array<Rectangle , 5>, 3> allRacerRecs{leftRacerRecs, midRacerRecs, rightRacerRecs};
 
-    //Timings for movement in frames per second
-    int racerMoveCooldown{0};
-    int racerPosition{0};
+    // Timings for movement in frames per second
     int baseRacerUpdateInterval{60};
     int minUpdateInterval{10};
+    int racerMoveCooldown{0};
+    int racerPosition{0};
     int racerUpdateInterval{baseRacerUpdateInterval};
+
     int timeToSpawn{baseRacerUpdateInterval * 2};
     int spawnCooldown{timeToSpawn};
-
     bool racerCanSpawn = false;
 
-    //Creating racers
+    // Creating racers
     Racer racerL{allRacerRecs, RacerType::leftRacer, racerMoveCooldown, racerUpdateInterval, racerPosition, racerCanSpawn, racerColor};
     Racer racerM{allRacerRecs, RacerType::midRacer, racerMoveCooldown, racerUpdateInterval, racerPosition, racerCanSpawn, racerColor};
     Racer racerR{allRacerRecs, RacerType::rightRacer, racerMoveCooldown, racerUpdateInterval, racerPosition, racerCanSpawn, racerColor};
 
-    //Load highscore
+    // Load highscore
     std::ofstream playerHSFile{};
     std::ifstream inputPlayerHSFile{"save.txt"};
     inputPlayerHSFile >> highscore;
 
-    //Set entry state
+    // Set entry state
     auto currentState{GameState::logo};
 
-    //Game loop
+    // Game loop
     while(!WindowShouldClose()) {
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-
+        // Music logic
         UpdateMusicStream(tracks[currentTrack]);
         timePlayed = GetMusicTimePlayed(tracks[currentTrack])/GetMusicTimeLength(tracks[currentTrack]);
         autoPlayTracks(tracks, timePlayed, currentTrack);
@@ -150,14 +151,17 @@ int main() {
 
             case GameState::game : {
 
+                // Distance formula
                 playerDistanceTraveled = (180 - (playerSpeed * 2) ) * frameCounter / GetFPS();
 
+                // Speed up enemies with W key
                 if(IsKeyReleased(KEY_W)) {
                     increaseRacerSpeed(racerL, minUpdateInterval, timeToSpawn);
                     increaseRacerSpeed(racerM, minUpdateInterval, timeToSpawn);
                     increaseRacerSpeed(racerR, minUpdateInterval, timeToSpawn);
                 }
 
+                // Spawn racers
                 if(spawnCooldown > timeToSpawn) {
                     switch(GetRandomValue(1, 3)) {
                         case 1: racerL.spawn(); break;
@@ -168,7 +172,7 @@ int main() {
                     spawnCooldown = 0;
                 }
 
-                //Increase player speed based on "fastest" racer
+                // Increase player speed based on "fastest" racer
                 if(racerL.getUpdateInterval() < racerM.getUpdateInterval() && racerR.getUpdateInterval()) {
                     playerSpeed = racerL.getUpdateInterval();
                 }
@@ -179,23 +183,23 @@ int main() {
                     playerSpeed = racerR.getUpdateInterval();
                 }
 
-                //Background gradient
+                // Background gradient
                 DrawRectangleGradientV(0,0,winWidth, halfHeight, DARKBLUE, RAYWHITE);
                 DrawRectangleGradientV(0, halfHeight, winWidth, winHeight, RAYWHITE, GRAY);
 
-                //Draw environment
+                // Draw environment
                 drawRoad(window, roadColor);
                 drawRoadMarkers(window, roadMarkerColor);
                 drawBuildings(window, buildingsColor);
 
                 drawStats(window, score, 36, playerSpeed, playerDistanceTraveled, statsColor);
 
-                //Racer behavior
+                // Racer logic
                 controlRacer(racerL, currentState, player, score);
                 controlRacer(racerM, currentState, player, score);
                 controlRacer(racerR, currentState, player, score);
 
-                //Player behavior
+                // Player logic
                 checkMove(player, columns);
                 player.draw();
 
@@ -205,7 +209,7 @@ int main() {
 
             case GameState::end : {
 
-                //Reset variables for new game
+                // Reset variables for new game
                 resetRacer(racerL);
                 resetRacer(racerM);
                 resetRacer(racerR);
@@ -232,6 +236,7 @@ int main() {
         EndDrawing();
     }
 
+    // Clean up audio
     UnloadMusicStream(tracks[currentTrack]);
     CloseAudioDevice();
 
