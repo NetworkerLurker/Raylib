@@ -4,7 +4,7 @@
 *
 *   Developed by Justice Bole (@JusticeBole)
 *
-*   This game was made been created using raylib v4.2 (www.raylib.com)
+*   This game was made using raylib v4.2 (www.raylib.com)
 *
 ********************************************************************************************/
 
