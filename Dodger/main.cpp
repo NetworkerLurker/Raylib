@@ -1,7 +1,17 @@
+/*******************************************************************************************
+*
+*   Dodger - A minimalist game, inspired by retro LCD handhelds
+*
+*   Developed by Justice Bole (@JusticeBole)
+*
+*   This game was made been created using raylib v4.2 (www.raylib.com)
+*
+********************************************************************************************/
+
 #include "Drawing.h"
 #include "Logic.h"
 
-int main() {
+int main()  {
 
     // Window settings
     constexpr int winWidth{960};
