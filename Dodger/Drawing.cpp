@@ -37,7 +37,7 @@ void drawRoadMarkers(Window& window , Color& color) {
 
 void drawStats(Window& window, int score, int fontSize, int playerSpeed, int playerDistanceTraveled, Color& color) {
     DrawText(TextFormat("Dodges: %i",score),window.getWidth() * .70f,window.getHeight() * .05f,fontSize,color);
-    DrawText(TextFormat("Speed: %imph",180 - (playerSpeed * 2)), window.getWidth() * .70f,window.getHeight() * .10f,fontSize,color);
+    DrawText(TextFormat("Speed: %imph", 120 - (playerSpeed * 2)), window.getWidth() * .70f,window.getHeight() * .10f,fontSize,color);
     DrawText(TextFormat("Distance: %i'",playerDistanceTraveled),window.getWidth() * .70f,window.getHeight() * .15f,fontSize,color);
 }
 

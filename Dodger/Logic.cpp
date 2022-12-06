@@ -61,11 +61,11 @@ void increaseRacerSpeed(Racer& racer, int minUpdate, int& timeToSpawn) {
     }
 }
 
-void resetRacer(Racer& racer) {
+void resetRacer(Racer& racer, int baseRacerUpdateInterval) {
     racer.resetPosition();
     racer.resetMoveCooldown();
     racer.resetSpawn();
-    racer.resetUpdateInterval();
+    racer.resetUpdateInterval(baseRacerUpdateInterval);
 }
 
 void updateSaveHighscore(int& score, int& highscore, std::ofstream& osFile) {

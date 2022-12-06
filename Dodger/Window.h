@@ -5,7 +5,7 @@
 #ifndef DODGER_WINDOW_H
 #define DODGER_WINDOW_H
 
-#include <raylib.h>
+#include "raylib.h"
 #include <string_view>
 
 class Window {
@@ -16,13 +16,11 @@ private:
 
 public:
     Window();
-
     Window(int width, int height, const char* title);
 
     ~Window();
 
     static void setDefaultFps();
-
     void initialize() const;
 
     [[nodiscard]] int getWidth() const;

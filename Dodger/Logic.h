@@ -21,7 +21,7 @@ void autoPlayTracks(std::vector<Music>& tracks, float& timePlayed, int& currentT
 void checkMove(Player& player, int columns);
 void controlRacer(Racer& racer, GameState& currentState, Player& player, int& score);
 void increaseRacerSpeed(Racer& racer, int minUpdate, int& timeToSpawn);
-void resetRacer(Racer& racer);
+void resetRacer(Racer& racer, int baseRacerUpdateInterval);
 void updateSaveHighscore(int& score, int& highscore, std::ofstream& osFile);
 
 #endif //DODGER_LOGIC_H

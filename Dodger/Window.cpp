@@ -13,7 +13,7 @@ Window::Window(int width, int height, const char* title) :
 Window::~Window() { CloseWindow(); }
 
 void Window::setDefaultFps() {
-    SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
+    SetTargetFPS(60);
 }
 
 void Window::initialize() const {

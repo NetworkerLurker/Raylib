@@ -7,7 +7,6 @@
 *   This game was made using raylib v4.2 (www.raylib.com)
 *
 ********************************************************************************************/
-
 #include "Drawing.h"
 #include "Logic.h"
 
@@ -33,10 +32,11 @@ int main()  {
     Color racerColor{BLUE};
     Color statsColor{RAYWHITE};
 
+
     // Audio setup
     InitAudioDevice();
+    std::string musicPath{"cmake-build-debug/Music"}; // Path for web build
     std::vector<Music> tracks{};
-    std::string musicPath{"Music"};
 
     // Load music into vector
     for (const auto& entry : std::filesystem::directory_iterator(musicPath)) {
@@ -61,7 +61,7 @@ int main()  {
     // Player stats
     int highscore{0};
     int score{0};
-    int playerDistanceTraveled;
+    int playerDistanceTraveled{0};
     int playerSpeed{0};
 
     // Possible racer positions
@@ -79,8 +79,10 @@ int main()  {
         {
             leftRacerRecs[i] = Rectangle{rectWidth * xPositionsL[i], winHeight - (rectHeight * yPositions[i]),
                                          rectWidth * sizeScalers[i], rectHeight * sizeScalers[i]};
+
             midRacerRecs[i] = Rectangle{rectWidth * xPositionsM[i], winHeight - (rectHeight * yPositions[i]),
                                         rectWidth * sizeScalers[i], rectHeight * sizeScalers[i]};
+
             rightRacerRecs[i] = Rectangle{rectWidth * xPositionsR[i], winHeight - (rectHeight * yPositions[i]),
                                           rectWidth * sizeScalers[i], rectHeight * sizeScalers[i]};
         }
@@ -90,8 +92,8 @@ int main()  {
 
     // Timings for movement in frames per second
     int frameCounter{0};
-    int baseRacerUpdateInterval{60};
-    int minUpdateInterval{10};
+    int baseRacerUpdateInterval{30};
+    int minUpdateInterval{5};
     int racerMoveCooldown{0};
     int racerPosition{0};
     int racerUpdateInterval{baseRacerUpdateInterval};
@@ -111,7 +113,7 @@ int main()  {
     inputPlayerHSFile >> highscore;
 
     // Set entry state
-    auto currentState{GameState::end};
+    auto currentState{GameState::logo};
 
     // Game loop
     while(!WindowShouldClose()) {
@@ -140,8 +142,9 @@ int main()  {
 
             case GameState::title : {
 
-                if(IsKeyPressed(KEY_SPACE))
+                if(IsKeyPressed(KEY_SPACE)) {
                     currentState = GameState::game;
+                }
 
                 DrawText("Dodger", winWidth * .25f, winHeight * .25f, 124, fontColor);
                 DrawText("Press Space To Start", winWidth * .10f, halfHeight, 64, fontColor);
@@ -151,7 +154,7 @@ int main()  {
             case GameState::game : {
 
                 // Distance formula
-                playerDistanceTraveled = (180 - (playerSpeed * 2) ) * frameCounter / GetFPS();
+                playerDistanceTraveled = ((120 - (playerSpeed * 2) ) * frameCounter) / GetFPS();
 
                 // Speed up enemies with W key
                 if(IsKeyReleased(KEY_W)) {
@@ -209,9 +212,9 @@ int main()  {
             case GameState::end : {
 
                 // Reset variables for new game
-                resetRacer(racerL);
-                resetRacer(racerM);
-                resetRacer(racerR);
+                resetRacer(racerL, baseRacerUpdateInterval);
+                resetRacer(racerM, baseRacerUpdateInterval);
+                resetRacer(racerR, baseRacerUpdateInterval);
 
                 timeToSpawn = baseRacerUpdateInterval * 2;
                 playerSpeed = baseRacerUpdateInterval;
