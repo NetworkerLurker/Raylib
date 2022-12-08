@@ -1,0 +1,1 @@
+Dodger is a minimalist racing game inspired by retro LCD handheld games. Gain score as you overtake other vehicles and speed up your racer to increase the challenge, just be careful not to crash! Listen to some catchy electronic beats while you try to increase your score.
