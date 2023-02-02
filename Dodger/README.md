@@ -3,6 +3,9 @@
 ## What's Dodger?
 Dodger is a minimalist racing game inspired by retro LCD handheld games. Gain score as you overtake other vehicles and speed up your racer to increase the challenge, just be careful not to crash! Listen to some catchy electronic beats while you try to increase your score.
 
+## Play on Itch.io
+https://justice-bole.itch.io/dodger
+<br>
 ![Dodger Gameplay Gif](https://img.itch.zone/aW1hZ2UvMTgyMzE5My8xMDcxNTM2OS5naWY=/original/qDORKP.gif)
 
 ## How it Works
@@ -12,3 +15,8 @@ Dodger is a minimalist racing game inspired by retro LCD handheld games. Gain sc
 - Graphics are drawn using Raylib's standard shape drawing functions, mainly rectangle.
 - Uses game design patterns like the state, loop, double buffer, and update.
 - Compiled with Emscripten to be ran in the web broswer.
+
+## Read About Raylib Compilation for Web
+I wrote a blogpost detailing some pitfalls encountered when compiling Dodger using emscripten and how to avoid/fix them.
+<br>
+https://justice-bole.itch.io/dodger/devlog/460605/audio-troubles-in-your-raylib-web-build-try-these-solutions
