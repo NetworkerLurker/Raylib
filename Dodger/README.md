@@ -16,7 +16,7 @@ https://justice-bole.itch.io/dodger
 - Uses game design patterns like the state, loop, double buffer, and update.
 - Compiled with Emscripten to be ran in the web broswer.
 
-## Read About Raylib Compilation for Web
-I wrote a blogpost detailing some pitfalls encountered when compiling Dodger using emscripten and how to avoid/fix them.
+## Read About Raylib Audio for Web
+I wrote a blogpost detailing some common audio errors I encountered and how you can avoid/fix them.
 <br>
 https://justice-bole.itch.io/dodger/devlog/460605/audio-troubles-in-your-raylib-web-build-try-these-solutions
